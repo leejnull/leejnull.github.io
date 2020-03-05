@@ -186,7 +186,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    10 分钟 读完 (大约 1482 个字)
+                    10 分钟 读完 (大约 1477 个字)
                 </span>
                 
                 
@@ -203,45 +203,16 @@ var _hmt = _hmt || [];
 <p>今天打开Xcode看到import的时候，突然想起来好像除了在刚出来工作面试iOS的时候背过它们的区别外，后来就再也没有深入了解过这两个究竟是什么作用，以致于到现在连作用区别都一时间说不上来，实在惭愧。今天还是来彻底研究一番。  </p>
 </blockquote>
 <h4 id="一般情况下"><a href="#一般情况下" class="headerlink" title="一般情况下"></a>一般情况下</h4><p>我们新建一个项目，再创建一个类文件比如叫FooView，此时我们要在其它地方用到FooView的时候，我们一般这样</p>
-<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"FooView"</span></span></span><br></pre></td></tr></table></figure>
-
-<p>当我使用cocoapod安装第三方库，比如安装了Masonry，那么在用到Masonry的时候，一般我都会</p>
-<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">&lt;Masonry.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>为什么不用 “”，因为我发现用”“编译器并不会给出提示，所以我一直以为只能用&lt;&gt;，但是在我做过的几个项目中，我其实并没有用到 &lt;&gt;，而是一直都用的 “”，曾经也很奇怪为什么会不一样，但之前也只是想想，可能是项目设置里面加了什么东西，也没有仔细深入了解。（PS：这种精神还是不可取的）</p>
-<p><strong>所以就会有这样一个思维：正常情况下，自己新建的文件用””，而通过cocoapod安装或者引用系统库文件，用&lt;&gt;</strong></p>
-<p>在Stack Overflow上有一个回答较高的解释：</p>
-<blockquote>
-<p>the quoted form is for “local” includes of files (you need to specify the relative path from the current file, e.g. <code>#include “headers/my_header.h”</code>), while the angle-bracket form is for “global” includes — those found somewhere on the include path passed to the compiler。<br>大概意思就是双引号用于引用本地文件，需要指定相对路径，尖括号用于全局引用，路径由编译器提供。</p>
-</blockquote>
-<p>当我们用&lt;&gt;引用我们新建的文件的时候，就会有这样一个提示：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;FooView.h&apos; file not found with &lt;angled&gt; include; use &quot;quotes&quot; instead</span><br></pre></td></tr></table></figure>
-
-<h4 id="user-header-map"><a href="#user-header-map" class="headerlink" title="user header map"></a>user header map</h4><blockquote>
-<p>Enable the use of Header Maps, which provide the compiler with a mapping from textual header names to their locations, bypassing the normal compiler header search path mechanisms. This allows source code to include headers from various locations in the file system without needing to update the header search path build settings。  </p>
-</blockquote>
-<p>在Xcode项目 - Build Settings 下搜索：search path</p>
-<p><img src="/images/2020-03-05-01.png" alt="User Header Maps"></p>
-<p>我们会看到有一个<strong>Use Header Maps</strong>开关，默认是打开的。这个意思是：开启这个开关后，在本地会根据当前目录生成一份文件名和相对路径的映射，依靠这个映射，我们可以直接import工程里的文件，不需要依靠header search path。<br>我们在管理项目的时候，一般都会把文件放在各个模块下面，模块以各个文件夹区分，在Xcode中创建文件夹会有两种方式，一种是虚拟文件夹（文件还是在项目根目录下），一种是真实文件夹。我之前一直觉得他们就是文件在不在一起的区别，当我关掉<strong>Use Header Maps</strong>这个选项的时候，这两种文件夹在这里又表现出了不一致。</p>
-<p>我一开始是用New Group With Folder创建的真实文件夹<br><img src="/images/2020-03-05-02.png" alt="real folder"><br>EventViewController是BaseViewController的子类，在头文件中引用了BaseViewController。<br>当我关掉Use Headers Maps选项的时候，就会报以下错误：<br><img src="/images/2020-03-05-03.png" alt="error"><br>相对路径找不到BaseViewController，这时候EventViewController是在Event文件夹下，BaseViewController是在Base文件夹下，由于关闭了Header Maps，所以无法直接引用。</p>
-<p>但是当我用虚拟文件夹管理文件的时候，由于他们都是在根目录下，所以通过相对路径引用是完全没有问题的，即使关闭了Use Headers Maps选项。</p>
-<h4 id="该如何解决？"><a href="#该如何解决？" class="headerlink" title="该如何解决？"></a>该如何解决？</h4><p>这时候我们就涉及到<strong>Header Search Paths</strong>和<strong>User Header Search Paths</strong>。两者都是提供search path，区别在于一个指明是用户的。并且如果编译器不支持user headers概念，会从header search paths中去寻找。并且看上面有一个<strong>Always Search User Paths</strong>，但是已经被Deprecated。查阅资料知道</p>
-<blockquote>
-<p>如果开启，&lt;&gt; 和 “” 都可以引用，关闭的话，user headers 只能通过””引用。  </p>
-</blockquote>
-<p>我们现在要让编译器知道这个文件在哪里，所以要在search paths里面添加引用文件所在的文件夹。<br><img src="/images/2020-03-05-04.png" alt><br>在Header Search Paths里添加的话，无论import “” 还是 import &lt;&gt;都是没有问题的，在User Header Search Paths里添加，只能使用import “”</p>
-<h4 id="解答上面cocopad安装第三方库引用的疑问"><a href="#解答上面cocopad安装第三方库引用的疑问" class="headerlink" title="解答上面cocopad安装第三方库引用的疑问"></a>解答上面cocopad安装第三方库引用的疑问</h4><p>看下面的三种方式</p>
-<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"Masonry.h"</span></span></span><br><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">&lt;Masonry.h&gt;</span></span></span><br><span class="line"><span class="hljs-meta">#import “Masonry/Masonry.h”</span></span><br></pre></td></tr></table></figure>
-
-<p>思考一下这三种方式是否都正确？<br>.<br>.<br>.<br>答案是：都正确。</p>
-<p>之前一直困惑用哪种方式，又好像哪种方式都正确。这次直接看 search paths下面，发现<br><img src="/images/2020-03-05-05.png" alt><br>cocopod在install的时候，会将第三方库的framework路径添加到Header Search Paths下，所以我们可以直接import，也可以import它的模块下的文件</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>如果按照Xcode默认配置的话，自己新建的文件直接import “”使用，cocoapod安装的第三方库使用import “”、import &lt;&gt;都可以使用。如果关闭Use Header Maps，文件不在根目录下的话，需要手动添加路径到search paths中，添加到User Header Search Paths只能通过import ”“使用，添加到Header Search Paths两种方式都可以。</p>
-<blockquote>
-<p>参考：<a href="https://juejin.im/post/58d88c7ab123db199f442aec" target="_blank" rel="noopener">关于Objective-C中的import - 掘金</a>  </p>
-</blockquote>
-
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2020/03/05/2020-03-05-01/#more">阅读更多</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
