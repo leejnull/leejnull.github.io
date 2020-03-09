@@ -7,22 +7,21 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>位运算的几种应用 - lee的博客</title>
+<title>标签: 学习笔记 - lee的博客</title>
 
 
-    <meta name="description" content="例1：不借助临时变量，交换两个数的值思路：通过异或，先求出两个变量的不同的位 123456var a = 10var b = 8a = a ^ bb = a ^ ba = a ^ b  例2：求一个UInt二进制数中1的个数思路：比如一个 1011 0100 这个二进制数，先用 1(0000 0001)和它做”与”操作，如果结果为 1，说明在最右边的这一位是 1，继续把 1 左移 1 位重复比较">
-<meta name="keywords" content="算法,位运算">
-<meta property="og:type" content="article">
-<meta property="og:title" content="位运算的几种应用">
-<meta property="og:url" content="https://leejnull.github.io/2019/09/07/2019-09-07/index.html">
+    <meta name="description" content="人一旦有了梦想，怎么活都是有灵魂的">
+<meta name="keywords" content="Go Python iOS 全栈">
+<meta property="og:type" content="website">
+<meta property="og:title" content="lee的博客">
+<meta property="og:url" content="https://leejnull.github.io/tags/学习笔记/page/2/index.html">
 <meta property="og:site_name" content="lee的博客">
-<meta property="og:description" content="例1：不借助临时变量，交换两个数的值思路：通过异或，先求出两个变量的不同的位 123456var a = 10var b = 8a = a ^ bb = a ^ ba = a ^ b  例2：求一个UInt二进制数中1的个数思路：比如一个 1011 0100 这个二进制数，先用 1(0000 0001)和它做”与”操作，如果结果为 1，说明在最右边的这一位是 1，继续把 1 左移 1 位重复比较">
+<meta property="og:description" content="人一旦有了梦想，怎么活都是有灵魂的">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://leejnull.github.io/images/og_image.png">
-<meta property="og:updated_time" content="2020-01-08T08:24:26.727Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="位运算的几种应用">
-<meta name="twitter:description" content="例1：不借助临时变量，交换两个数的值思路：通过异或，先求出两个变量的不同的位 123456var a = 10var b = 8a = a ^ bb = a ^ ba = a ^ b  例2：求一个UInt二进制数中1的个数思路：比如一个 1011 0100 这个二进制数，先用 1(0000 0001)和它做”与”操作，如果结果为 1，说明在最右边的这一位是 1，继续把 1 左移 1 位重复比较">
+<meta name="twitter:title" content="lee的博客">
+<meta name="twitter:description" content="人一旦有了梦想，怎么活都是有灵魂的">
 <meta name="twitter:image" content="https://leejnull.github.io/images/og_image.png">
 
 
@@ -106,13 +105,13 @@ var _hmt = _hmt || [];
 
 <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="is-2-column">
+<body class="is-3-column">
     <nav class="navbar navbar-main">
     <div class="container">
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="位运算的几种应用" height="28">
+                <img src="/images/logo.svg" alt="lee的博客" height="28">
             
             </a>
         </div>
@@ -159,23 +158,34 @@ var _hmt = _hmt || [];
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
+    <div class="card-content">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="/tags">标签</a></li>
+            <li class="is-active"><a href="#" aria-current="page">学习笔记</a></li>
+        </ul>
+        </nav>
+    </div>
+</div>
+
+    <div class="card">
     
     <div class="card-content article ">
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-09-07T06:32:59.000Z">2019-09-07</time>
+                <time class="level-item has-text-grey" datetime="2020-01-03T01:32:26.000Z">2020-01-03</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/数据结构与算法/">数据结构与算法</a>
+                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    4 分钟 读完 (大约 650 个字)
+                    4 分钟 读完 (大约 565 个字)
                 </span>
                 
                 
@@ -184,126 +194,54 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                位运算的几种应用
+                <a class="has-link-black-ter" href="/2020/01/03/2020-01-03-01/">Swift与OC的运行时特性</a>
             
         </h1>
         <div class="content">
-            <h4 id="例1：不借助临时变量，交换两个数的值"><a href="#例1：不借助临时变量，交换两个数的值" class="headerlink" title="例1：不借助临时变量，交换两个数的值"></a>例1：不借助临时变量，交换两个数的值</h4><p>思路：通过异或，先求出两个变量的不同的位</p>
-<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">var</span> a = <span class="hljs-number">10</span></span><br><span class="line"><span class="hljs-keyword">var</span> b = <span class="hljs-number">8</span></span><br><span class="line"></span><br><span class="line">a = a ^ b</span><br><span class="line">b = a ^ b</span><br><span class="line">a = a ^ b</span><br></pre></td></tr></table></figure>
-
-<h4 id="例2：求一个UInt二进制数中1的个数"><a href="#例2：求一个UInt二进制数中1的个数" class="headerlink" title="例2：求一个UInt二进制数中1的个数"></a>例2：求一个UInt二进制数中1的个数</h4><p>思路：比如一个 1011 0100 这个二进制数，先用 1(0000 0001)和它做”与”操作，如果结果为 1，说明在最右边的这一位是 1，继续把 1 左移 1 位重复比较</p>
-<a id="more"></a>
-
-<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getCountOfOne</span><span class="hljs-params">(num: UInt)</span></span> -&gt; <span class="hljs-type">UInt</span> &#123;</span><br><span class="line">    <span class="hljs-keyword">var</span> <span class="hljs-built_in">count</span>: <span class="hljs-type">UInt</span> = <span class="hljs-number">0</span></span><br><span class="line">    <span class="hljs-keyword">var</span> temp = num</span><br><span class="line">    <span class="hljs-keyword">var</span> loopCount = <span class="hljs-number">0</span></span><br><span class="line">    <span class="hljs-keyword">while</span> temp != <span class="hljs-number">0</span> &#123;</span><br><span class="line">        <span class="hljs-built_in">count</span> += (temp &amp; <span class="hljs-number">1</span>)</span><br><span class="line">        temp = (temp &gt;&gt; <span class="hljs-number">1</span>)</span><br><span class="line">        loopCount += <span class="hljs-number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-built_in">print</span>(<span class="hljs-string">"loop1 count: \(loopCount)"</span>)</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">count</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上述算法有一个可以优化的地方，当有这样一个数 1100 0000，如果还是从最右边往左判断的话，有大量的 0 是没有必要的，我们可以从左边开始，让 num 和 num-1 这两个数做”与”运算，如果结果为 0，则说明这个数后续已经没有 1 了，反之继续比较</p>
-<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getCountOfOne2</span><span class="hljs-params">(num: UInt)</span></span> -&gt; <span class="hljs-type">UInt</span> &#123;</span><br><span class="line">    <span class="hljs-keyword">var</span> <span class="hljs-built_in">count</span>: <span class="hljs-type">UInt</span> = <span class="hljs-number">0</span></span><br><span class="line">    <span class="hljs-keyword">var</span> temp = num</span><br><span class="line">    <span class="hljs-keyword">var</span> loopCount = <span class="hljs-number">0</span></span><br><span class="line">    <span class="hljs-keyword">while</span> temp != <span class="hljs-number">0</span> &#123;</span><br><span class="line">        <span class="hljs-built_in">count</span> += <span class="hljs-number">1</span></span><br><span class="line">        temp = temp &amp; (temp-<span class="hljs-number">1</span>)</span><br><span class="line">        loopCount += <span class="hljs-number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-built_in">print</span>(<span class="hljs-string">"loop2 count: \(loopCount)"</span>)</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">count</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="例3：判断一个UInt数是否为2的整数幂次方"><a href="#例3：判断一个UInt数是否为2的整数幂次方" class="headerlink" title="例3：判断一个UInt数是否为2的整数幂次方"></a>例3：判断一个UInt数是否为2的整数幂次方</h4><p>思路：能成为 2 的整数次幂的数，其二进制一定是这种类型的：1000 0000，如果 1000 0000 和它的 -1 后的数 0111 1111 做”与”操作，结果就是 0 </p>
-<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">isPowerOfTwo</span><span class="hljs-params">(num: UInt)</span></span> -&gt; <span class="hljs-type">Bool</span> &#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> (num &amp; (num-<span class="hljs-number">1</span>)) == <span class="hljs-number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="例4：找丢失数"><a href="#例4：找丢失数" class="headerlink" title="例4：找丢失数"></a>例4：找丢失数</h4><blockquote>
-<p>一堆成对出现的数：1，2，3，4，3，2，1，找出其中缺失的一个数</p>
-</blockquote>
-<p>思路：给定一个初始值，和数组里面的所有数做”异或”操作，成对出现的数和0做完异或操作后，结果依然是0，最后缺失的那个数4和0做异或操作，结果依然是4</p>
-<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">findLostNum</span><span class="hljs-params">(nums: [UInt])</span></span> -&gt; <span class="hljs-type">UInt</span> &#123;</span><br><span class="line">    <span class="hljs-keyword">var</span> lostNum: <span class="hljs-type">UInt</span> = <span class="hljs-number">0</span></span><br><span class="line">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums &#123;</span><br><span class="line">        lostNum = lostNum ^ num</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-keyword">return</span> lostNum</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>如果有两个数缺失呢？</strong></p>
-<p>思路：分两组来计算。先求他们的异或结果，然后找出可以区分缺失的两个数的最右边为1的位的flag（缺失的两个数最右侧为1的位数肯定是不一样的），遍历数组，根据num和flag的”与”运算是否为0，分为2组，分别做异或运算，这里就和上面的过程一致了。</p>
-<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">findTwoLostNums</span><span class="hljs-params">(nums: [UInt])</span></span> -&gt; (<span class="hljs-type">UInt</span>, <span class="hljs-type">UInt</span>) &#123;</span><br><span class="line">    <span class="hljs-keyword">var</span> num1: <span class="hljs-type">UInt</span> = <span class="hljs-number">0</span></span><br><span class="line">    <span class="hljs-keyword">var</span> num2: <span class="hljs-type">UInt</span> = <span class="hljs-number">0</span></span><br><span class="line">    <span class="hljs-keyword">var</span> temp: <span class="hljs-type">UInt</span> = <span class="hljs-number">0</span></span><br><span class="line">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums &#123;</span><br><span class="line">        <span class="hljs-comment">// 得到缺失的两个数的结果</span></span><br><span class="line">        temp = temp ^ num</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-comment">// 找到最后为1的位</span></span><br><span class="line">    <span class="hljs-keyword">var</span> flag: <span class="hljs-type">UInt</span> = <span class="hljs-number">1</span></span><br><span class="line">    <span class="hljs-keyword">while</span> (flag &amp; temp) == <span class="hljs-number">0</span> &#123;</span><br><span class="line">        flag = flag &lt;&lt; <span class="hljs-number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-comment">// 找两个丢失的数字</span></span><br><span class="line">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums &#123;</span><br><span class="line">        <span class="hljs-keyword">if</span> (flag &amp; num) == <span class="hljs-number">0</span> &#123;</span><br><span class="line">            num1 = num1 ^ num</span><br><span class="line">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            num2 = num2 ^ num</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-keyword">return</span> (num1, num2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+            <h4 id="OC运行时"><a href="#OC运行时" class="headerlink" title="OC运行时"></a>OC运行时</h4><ul>
+<li>动态类型</li>
+<li>动态绑定</li>
+<li>动态装载</li></ul>
         </div>
         
-        <div class="level is-size-7 is-uppercase">
+        
+        <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/位运算/">位运算</a>, <a class="has-link-grey -link" href="/tags/算法/">算法</a>
+                <a class="button is-size-7 is-light" href="/2020/01/03/2020-01-03-01/#more">阅读更多</a>
                 </div>
             </div>
         </div>
         
         
-        
     </div>
 </div>
 
 
 
-<div class="card">
-    <div class="card-content">
-        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
-        <div class="buttons is-centered">
-            
-                
-<a class="button is-info donate">
-    <span class="icon is-small">
-        <i class="fab fa-alipay"></i>
-    </span>
-    <span>支付宝</span>
-    <div class="qrcode"><img src="/images/alipay.jpg" alt="支付宝"></div>
-</a>
-
-                
-                
-<a class="button is-success donate">
-    <span class="icon is-small">
-        <i class="fab fa-weixin"></i>
-    </span>
-    <span>微信</span>
-    <div class="qrcode"><img src="/images/wechatpay.jpg" alt="微信"></div>
-</a>
-
-                
-        </div>
-    </div>
-</div>
 
 
 
+
+
+
+    
 <div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/12/27/2019-12-27-01/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">这3个月20天都是怎么度过的</span>
-            </a>
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <div class="pagination-previous">
+            <a class="is-flex-grow has-text-black-ter" href="/tags/学习笔记/">上一页</a>
         </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019/08/29/2019-08-29/">
-                <span class="level-item">关于Go的四种字符串拼接及性能比较</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
+        <div class="pagination-next is-invisible is-hidden-mobile">
+            <a class="is-flex-grow has-text-black-ter" href="/tags/学习笔记/page/3/">下一页</a>
         </div>
-        
-    </div>
-</div>
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">评论</h3>
-        
-<div id="valine-thread" class="content"></div>
-<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-<script>
-    new Valine({
-        el: '#valine-thread' ,
-        notify: false,
-        verify: false,
-        app_id: '7CGzybHlBx3krS6DnoSkL1BR-gzGzoHsz',
-        app_key: 'u3A9Vlz8twJRIbjVc8McLId6',
-        placeholder: '...'
-    });
-</script>
-
-    </div>
+        <ul class="pagination-list is-hidden-mobile">
+            
+            <li><a class="pagination-link has-text-black-ter" href="/tags/学习笔记/">1</a></li>
+            
+            <li><a class="pagination-link is-current" href="/tags/学习笔记/page/2/">2</a></li>
+            
+        </ul>
+    </nav>
 </div>
 </div>
                 
@@ -311,7 +249,7 @@ var _hmt = _hmt || [];
 
 
 
-<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
     
         
 <div class="card widget">
@@ -531,7 +469,7 @@ var _hmt = _hmt || [];
 
     
     
-        <div class="column-right-shadow  ">
+        <div class="column-right-shadow is-hidden-widescreen ">
         
             
 <div class="card widget">
@@ -923,6 +861,402 @@ var _hmt = _hmt || [];
 </div>
 
                 
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-09T02:36:04.000Z">2020-03-09</time></div>
+                    <a href="/2020/03/09/2020-03-09-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">异步绘制</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-07T12:59:31.000Z">2020-03-07</time></div>
+                    <a href="/2020/03/07/2020-03-07-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">UI绘制原理</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-05T07:50:47.000Z">2020-03-05</time></div>
+                    <a href="/2020/03/05/2020-03-05-02/" class="title has-link-black-ter is-size-6 has-text-weight-normal">事件响应和传递</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-05T07:27:13.000Z">2020-03-05</time></div>
+                    <a href="/2020/03/05/2020-03-05-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">彻底搞懂import &#34;&#34; 和 import &lt;&gt;</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-04T09:52:39.000Z">2020-03-04</time></div>
+                    <a href="/2020/03/04/2020-03-04-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">二分查找（下）</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构与算法/">数据结构与算法</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">8</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">7</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">8</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Django/">
+                        <span class="tag">Django</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Event/">
+                        <span class="tag">Event</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Mac使用/">
+                        <span class="tag">Mac使用</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/MarkDown/">
+                        <span class="tag">MarkDown</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Mysql/">
+                        <span class="tag">Mysql</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Python/">
+                        <span class="tag">Python</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/RunLoop/">
+                        <span class="tag">RunLoop</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Swift/">
+                        <span class="tag">Swift</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/flag/">
+                        <span class="tag">flag</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/iOS/">
+                        <span class="tag">iOS</span>
+                        <span class="tag is-grey">6</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/import/">
+                        <span class="tag">import</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/package/">
+                        <span class="tag">package</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/pip/">
+                        <span class="tag">pip</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sql/">
+                        <span class="tag">sql</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/位运算/">
+                        <span class="tag">位运算</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/基础/">
+                        <span class="tag">基础</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/多线程/">
+                        <span class="tag">多线程</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/字符串/">
+                        <span class="tag">字符串</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/学习笔记/">
+                        <span class="tag">学习笔记</span>
+                        <span class="tag is-grey">11</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/小感想/">
+                        <span class="tag">小感想</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/并发/">
+                        <span class="tag">并发</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/底层/">
+                        <span class="tag">底层</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/性能/">
+                        <span class="tag">性能</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/报错/">
+                        <span class="tag">报错</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/排序/">
+                        <span class="tag">排序</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/数据结构/">
+                        <span class="tag">数据结构</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/日常反思/">
+                        <span class="tag">日常反思</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/正则表达式/">
+                        <span class="tag">正则表达式</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/算法/">
+                        <span class="tag">算法</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/翻译/">
+                        <span class="tag">翻译</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/队列/">
+                        <span class="tag">队列</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+</div>
+
+                
             </div>
         </div>
     </section>
@@ -932,7 +1266,7 @@ var _hmt = _hmt || [];
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.svg" alt="位运算的几种应用" height="28">
+                    <img src="/images/logo.svg" alt="lee的博客" height="28">
                 
                 </a>
                 <p class="is-size-7">
