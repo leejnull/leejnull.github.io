@@ -7,22 +7,22 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>mysqlclient修复image not found - lee的博客</title>
+<title>界面性能优化 - lee的博客</title>
 
 
-    <meta name="description" content="Django项目要用到mysql，安装完mysqlclient之后，启动项目报错 1234567891011INFO Watching for file changes with StatReloaderException in thread django-main-thread:Traceback (most recent call last):  File &amp;quot;/Library/Fra">
-<meta name="keywords" content="Python,Django,Mysql">
+    <meta name="description" content="CPU资源消耗原因和解决方案对象创建 对象的创建会分配内存、调整属性、甚至还有读取文件等操作，比较消耗CPU资源，尽量用轻量的对象带它重量的对象。 CALayer比UIView要轻量许多，如果控件不需要响应触摸事件，可以用CALayer代替。 如果对象不涉及UI操作，尽量放到后台线程去创建。 包含CALayer的控件，只能在主线程创建和操作。 通过StoryBoard创建视图对象，消耗资源严重。不">
+<meta name="keywords" content="iOS,优化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysqlclient修复image not found">
-<meta property="og:url" content="https://leejnull.github.io/2020/02/24/2020-02-24-02/index.html">
+<meta property="og:title" content="界面性能优化">
+<meta property="og:url" content="https://leejnull.github.io/2020/03/10/2020-03-10-02/index.html">
 <meta property="og:site_name" content="lee的博客">
-<meta property="og:description" content="Django项目要用到mysql，安装完mysqlclient之后，启动项目报错 1234567891011INFO Watching for file changes with StatReloaderException in thread django-main-thread:Traceback (most recent call last):  File &amp;quot;/Library/Fra">
+<meta property="og:description" content="CPU资源消耗原因和解决方案对象创建 对象的创建会分配内存、调整属性、甚至还有读取文件等操作，比较消耗CPU资源，尽量用轻量的对象带它重量的对象。 CALayer比UIView要轻量许多，如果控件不需要响应触摸事件，可以用CALayer代替。 如果对象不涉及UI操作，尽量放到后台线程去创建。 包含CALayer的控件，只能在主线程创建和操作。 通过StoryBoard创建视图对象，消耗资源严重。不">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://leejnull.github.io/images/og_image.png">
-<meta property="og:updated_time" content="2020-02-24T14:26:35.653Z">
+<meta property="og:updated_time" content="2020-03-10T08:54:12.409Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysqlclient修复image not found">
-<meta name="twitter:description" content="Django项目要用到mysql，安装完mysqlclient之后，启动项目报错 1234567891011INFO Watching for file changes with StatReloaderException in thread django-main-thread:Traceback (most recent call last):  File &amp;quot;/Library/Fra">
+<meta name="twitter:title" content="界面性能优化">
+<meta name="twitter:description" content="CPU资源消耗原因和解决方案对象创建 对象的创建会分配内存、调整属性、甚至还有读取文件等操作，比较消耗CPU资源，尽量用轻量的对象带它重量的对象。 CALayer比UIView要轻量许多，如果控件不需要响应触摸事件，可以用CALayer代替。 如果对象不涉及UI操作，尽量放到后台线程去创建。 包含CALayer的控件，只能在主线程创建和操作。 通过StoryBoard创建视图对象，消耗资源严重。不">
 <meta name="twitter:image" content="https://leejnull.github.io/images/og_image.png">
 
 
@@ -112,7 +112,7 @@ var _hmt = _hmt || [];
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="mysqlclient修复image not found" height="28">
+                <img src="/images/logo.svg" alt="界面性能优化" height="28">
             
             </a>
         </div>
@@ -165,17 +165,17 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-02-24T14:16:24.000Z">2020-02-24</time>
+                <time class="level-item has-text-grey" datetime="2020-03-10T08:51:54.000Z">2020-03-10</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Python/">Python</a>
+                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    3 分钟 读完 (大约 400 个字)
+                    13 分钟 读完 (大约 1982 个字)
                 </span>
                 
                 
@@ -184,26 +184,36 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                mysqlclient修复image not found
+                界面性能优化
             
         </h1>
         <div class="content">
-            <p>Django项目要用到mysql，安装完mysqlclient之后，启动项目报错</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">INFO Watching for file changes with StatReloader</span><br><span class="line">Exception in thread django-main-thread:</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/django/db/backends/mysql/base.py&quot;, line 16, in &lt;module&gt;</span><br><span class="line">    import MySQLdb as Database</span><br><span class="line">  File &quot;/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/MySQLdb/__init__.py&quot;, line 18, in &lt;module&gt;</span><br><span class="line">    from . import _mysql</span><br><span class="line">ImportError: dlopen(/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/MySQLdb/_mysql.cpython-38-darwin.so, 2): Library not loaded: /usr/local/opt/mysql/lib/libmysqlclient.20.dylib</span><br><span class="line">  Referenced from: /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/MySQLdb/_mysql.cpython-38-darwin.so</span><br><span class="line">  Reason: image not found</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
-
+            <h2 id="CPU资源消耗原因和解决方案"><a href="#CPU资源消耗原因和解决方案" class="headerlink" title="CPU资源消耗原因和解决方案"></a>CPU资源消耗原因和解决方案</h2><h3 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h3><ul>
+<li>对象的创建会分配内存、调整属性、甚至还有读取文件等操作，比较消耗CPU资源，尽量用轻量的对象带它重量的对象。</li>
+<li>CALayer比UIView要轻量许多，如果控件不需要响应触摸事件，可以用CALayer代替。</li>
+<li>如果对象不涉及UI操作，尽量放到后台线程去创建。</li>
+<li>包含CALayer的控件，只能在主线程创建和操作。</li>
+<li>通过StoryBoard创建视图对象，消耗资源严重。不建议用。</li>
+</ul>
 <a id="more"></a>
 
-<p>后面部分省略，主要看这部分，提示找不到libmysqlclient.20.dylib，之前为了安装mysqlclient，折腾了一大堆，brew update &amp;&amp; brew upgrade，mysql又重新装了一遍，可能是由于这些原因导致的。</p>
-<p>打印显示该目录下有一个libmysqlclient.21.dylib</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-rw-r--r--    1 lijun  staff   7.0M  2 24 22:11 libmysqlclient.21.dylib</span><br><span class="line">-r--r--r--    1 lijun  staff   7.7M 12 10 04:11 libmysqlclient.a</span><br><span class="line">lrwxr-xr-x    1 lijun  staff    23B 12 10 04:11 libmysqlclient.dylib -&gt; libmysqlclient.21.dylib</span><br><span class="line">-r--r--r--    1 lijun  staff   683K  2 24 21:48 libmysqlharness.1.dylib</span><br><span class="line">-r--r--r--    1 lijun  staff   7.8M  2 24 21:48 libmysqlrouter.1.dylib</span><br><span class="line">-r--r--r--    1 lijun  staff   254K  2 24 21:48 libmysqlrouter_http.1.dylib</span><br><span class="line">-r--r--r--    1 lijun  staff   9.5K 12 10 04:11 libmysqlservices.a</span><br><span class="line">drwxr-xr-x   13 lijun  staff   416B 12 10 04:11 mysqlrouter</span><br><span class="line">drwxr-xr-x    3 lijun  staff    96B  2 24 21:48 pkgconfig</span><br><span class="line">drwxr-xr-x  105 lijun  staff   3.3K 12 10 04:11 plugin</span><br></pre></td></tr></table></figure>
+<h3 id="对象调整"><a href="#对象调整" class="headerlink" title="对象调整"></a>对象调整</h3><p>CALayer内部并没有属性，当调用属性方法时，它内部是通过运行时 resolveInstanceMethod 为对象临时添加一个方法，并把对应属性值保存到内部的一个 Dictionary 里，同时还会通知 delegate、创建动画等等，非常消耗资源。<br>UIView的关于显示的属性（比如frame_bounds_transform）等实际上都是CALayer属性映射来的，所以对UIView的这些属性进行调整时，消耗的资源要远大于一般的属性。<br>所以要尽量减少不必要的属性修改</p>
+<h3 id="对象销毁"><a href="#对象销毁" class="headerlink" title="对象销毁"></a>对象销毁</h3><p>对象消耗消耗资源不多，但是如果有容器持有大量对象，也是可以优化的。把他们放到后台去释放，这里介绍个小tip：</p>
+<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">NSArray</span> *tmp = <span class="hljs-keyword">self</span>.array;</span><br><span class="line"><span class="hljs-keyword">self</span>.array = <span class="hljs-literal">nil</span>;</span><br><span class="line"><span class="hljs-built_in">dispatch_async</span>(queue, ^&#123;</span><br><span class="line">	[tmp <span class="hljs-keyword">class</span>];</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<p>索性想能不能加一个指向libmysqlclient.21.dylib的软连接libmysqlclient.20.dylib</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -sfv /usr/local/opt/mysql/lib/libmysqlclient.21.dylib /usr/local/opt/mysql/lib/libmysqlclient.20.dylib</span><br></pre></td></tr></table></figure>
+<p>把对象捕获到block中，然后扔到后台队列去随便发送个消息以免编译器警告，就可以让对象在后台线程销毁了。</p>
+<h3 id="布局计算"><a href="#布局计算" class="headerlink" title="布局计算"></a>布局计算</h3><p>计算视图布局是App中最为常见的消耗资源的地方，尽量在后台线程提前计算好视图布局、并且对视图布局进行缓存。</p>
+<h3 id="AutoLayout"><a href="#AutoLayout" class="headerlink" title="AutoLayout"></a>AutoLayout</h3><p>自动布局对于复杂的视图来说，可能会产生性能问题。如果遇到这种情况，建议使用手动布局，或者ComponentKit、AsyncDisplayKit等框架。</p>
+<h3 id="文本计算"><a href="#文本计算" class="headerlink" title="文本计算"></a>文本计算</h3><p>如果一个界面包含大量文本（比如微博、微信朋友圈等），文本的宽高计算会占用很大一部分资源，并且不可避免。如果对文本显示没有特殊要求，可以参考UILabel内部的实现方式：用<code>[NSAttributedString boundingRectWithSize:options:context]</code>来计算文本宽高，用<code>[NSAttributedString drawWithRect:options:context]</code>来绘制文本。尽管这两个方法性能不错，但仍旧需要放到后台线程进行以避免阻塞主线程。<br>如果用CoreText绘制文本，可以先生成CoreText排版对象，然后自己计算。并且CoreText对象还能保留以供稍后绘制使用。</p>
+<h3 id="文本渲染"><a href="#文本渲染" class="headerlink" title="文本渲染"></a>文本渲染</h3><p>屏幕上能看到的所有文本内容控件，包括UIWebView，在底层都是通过CoreText排版、绘制为Bitmap显示的。常见的文本空间（UILabel、UITextView等），其排版和绘制都是在主线程进行的，当显示大量文本时，CPU的压力会非常大。对此解决方案只有一个，那就是自定义文本空间，用TextKit 或最底层的CoreText对文本异步绘制。<br>CoreText对象创建好后，能直接获取文本的宽高等信息，避免了多次计算（调整UILabel大小时算一遍、UILabel绘制时内部再算一遍）；CoreText对象占用内存较少，可以缓存下来以备稍后多次渲染。</p>
+<h3 id="图片解码"><a href="#图片解码" class="headerlink" title="图片解码"></a>图片解码</h3><p>用UIImage或CGImageSource的那几个方法创建图片时，图片数据并不会立刻解码。图片设置到UIImageView或者CALayer.contents中去，并且CALayer被提交到GPU前，CGImage中的数据才会得到解码。这一步是发生在主线程的，并且不可避免。如果想要绕开这个机制，常见的做法是在后台线程先把图片绘制到CGBitmapContext中，然后从Bitmap直接创建图片。</p>
+<h3 id="图像绘制"><a href="#图像绘制" class="headerlink" title="图像绘制"></a>图像绘制</h3><p>图像的绘制通常是指用那些以CG开头的方法把图形绘制到画布中，然后从画布创建图片并显示这个过程。这个最常见的地方就是[UIView drawRect:]里面。由于CoreGraphic方法通常都是现场安全的，所以图形的绘制可以很容易的放到后台线程进行。一个简单的异步绘制的过程大致如下：</p>
+<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)display &#123;</span><br><span class="line">	<span class="hljs-built_in">dispatch_async</span>(backgroundQueue, ^&#123;</span><br><span class="line">		<span class="hljs-built_in">CGContextRef</span> ctx = <span class="hljs-built_in">CGBitmapContextCreate</span>(…);</span><br><span class="line">		<span class="hljs-built_in">CGImageRef</span> img = <span class="hljs-built_in">CGBitmapContextCreateImage</span>(ctx);</span><br><span class="line">		<span class="hljs-built_in">CFRelease</span>(ctx);</span><br><span class="line">		<span class="hljs-built_in">dispatch_async</span>(mainQueue, ^&#123;</span><br><span class="line">			layer.contents = img;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>重新运行项目</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">python3.8 manage.py runserver                                                                                                          [22:11:52]</span><br><span class="line">INFO Watching for file changes with StatReloader</span><br><span class="line">Performing system checks...</span><br><span class="line"></span><br><span class="line">System check identified no issues (0 silenced).</span><br><span class="line"></span><br><span class="line">You have 20 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, book, contenttypes, crawler, sessions, user.</span><br><span class="line">Run &apos;python manage.py migrate&apos; to apply them.</span><br><span class="line"></span><br><span class="line">February 24, 2020 - 22:14:58</span><br><span class="line">Django version 3.0.3, using settings &apos;bookstore.settings&apos;</span><br><span class="line">Starting development server at http://127.0.0.1:8000/</span><br><span class="line">Quit the server with CONTROL-C.</span><br></pre></td></tr></table></figure>
-
-<p>OK，解决~</p>
+<h2 id="GPU资源消耗原因和解决方案"><a href="#GPU资源消耗原因和解决方案" class="headerlink" title="GPU资源消耗原因和解决方案"></a>GPU资源消耗原因和解决方案</h2><p>相对于CPU来说，GPU能干的事情比较单一：接收提交的纹理（Texture）和顶点描述（三角形），应用变换（transform）、混合并渲染，然后输出到屏幕上。通常所能看到的内容，主要也就是纹理（图片）和形状（三角模拟的矢量图形）两类。</p>
+<h3 id="纹理的渲染"><a href="#纹理的渲染" class="headerlink" title="纹理的渲染"></a>纹理的渲染</h3><p>所有的Bitmap，包括图片、文本、栅格化的内容，最终都是由内存提交到显存，绑定为GPU Texture。不论是提交到显存的过程，还是GPU调整和渲染Texture的过程，都要消耗不少GPU资源。当在较短时间显示大量图片时（比如TableView存在非常多的图片并且快速滑动时），CPU占用率很低，GPU占用非常高，界面仍然会掉帧。避免这种情况的方法只能是尽量减少在短时间内大量显示图片的显示，尽可能将多张图片合成为一张进行显示。<br>当图片过大时，超过GPU的最大纹理尺寸时，图片需要由CPU进行预处理，这对CPU和GPU都会带来额外的资源消耗。<br>目前来说，iPhone 4s以上机型，纹理尺寸上限都是4096x4096，所以，尽量不要让图片和视图的大小超过这个值。</p>
+<h3 id="视图的混合"><a href="#视图的混合" class="headerlink" title="视图的混合"></a>视图的混合</h3><p>当多个视图（或者说CALayer）重叠在一起显示时，GPU会首先把它们混合到一起。如果视图结构过于复杂，混合的过程也会消耗很多GPU资源。为了减轻这种情况的GPU消耗，应当尽量减少视图数量和层次，并在不透明的视图里表明opaque属性以避免无用的Alpha通道合成。<br>也可以用上面的方法，把多个视图预先渲染为一张图片来显示。</p>
+<h3 id="图形的生成"><a href="#图形的生成" class="headerlink" title="图形的生成"></a>图形的生成</h3><p>CALayer的border、圆角、阴影、遮罩（mask），CASharpLayer的矢量图形显示，通常会触发离屏渲染（offscreen rendering），而离屏渲染通常发生在GPU中。<br>当一个列表视图中出现大量圆角的CALayer，并且快速滑动时，GPU会被大量占用，但是CPU资源消耗很少。这时帧数就会降低。<br>为了避免这种情况，可以尝试开启CALayer.shouldRasterize属性，把原本离屏渲染的操作转移到CPU上去。<br>对于只需要圆角的某些场合，也可以用一张已经绘制好的圆角图片覆盖到原本视图上面来模拟相同的视觉效果。<br>最彻底的解决办法，就是把需要系那是的图形在后台线程绘制为图片，避免使用圆角、阴影、遮罩等属性。</p>
 
         </div>
         
@@ -211,7 +221,7 @@ var _hmt = _hmt || [];
             <div class="level-start">
                 <div class="level-item">
                     <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/Django/">Django</a>, <a class="has-link-grey -link" href="/tags/Mysql/">Mysql</a>, <a class="has-link-grey -link" href="/tags/Python/">Python</a>
+                    <a class="has-link-grey -link" href="/tags/iOS/">iOS</a>, <a class="has-link-grey -link" href="/tags/优化/">优化</a>
                 </div>
             </div>
         </div>
@@ -257,17 +267,10 @@ var _hmt = _hmt || [];
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/03/01/2020-03-01-01/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">写于2020.03.01 23:58</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2020/02/24/2020-02-24-01/">
-                <span class="level-item">安装mysqlclient报错</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/03/10/2020-03-10-01/">
+                <span class="level-item">设置navigationItem</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -952,7 +955,7 @@ var _hmt = _hmt || [];
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.svg" alt="mysqlclient修复image not found" height="28">
+                    <img src="/images/logo.svg" alt="界面性能优化" height="28">
                 
                 </a>
                 <p class="is-size-7">
