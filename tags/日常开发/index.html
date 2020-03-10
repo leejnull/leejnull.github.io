@@ -7,22 +7,21 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>mysqlclient修复image not found - lee的博客</title>
+<title>标签: 日常开发 - lee的博客</title>
 
 
-    <meta name="description" content="Django项目要用到mysql，安装完mysqlclient之后，启动项目报错 1234567891011INFO Watching for file changes with StatReloaderException in thread django-main-thread:Traceback (most recent call last):  File &amp;quot;/Library/Fra">
-<meta name="keywords" content="Python,Django,Mysql">
-<meta property="og:type" content="article">
-<meta property="og:title" content="mysqlclient修复image not found">
-<meta property="og:url" content="https://leejnull.github.io/2020/02/24/2020-02-24-02/index.html">
+    <meta name="description" content="人一旦有了梦想，怎么活都是有灵魂的">
+<meta name="keywords" content="Go Python iOS 全栈">
+<meta property="og:type" content="website">
+<meta property="og:title" content="lee的博客">
+<meta property="og:url" content="https://leejnull.github.io/tags/日常开发/index.html">
 <meta property="og:site_name" content="lee的博客">
-<meta property="og:description" content="Django项目要用到mysql，安装完mysqlclient之后，启动项目报错 1234567891011INFO Watching for file changes with StatReloaderException in thread django-main-thread:Traceback (most recent call last):  File &amp;quot;/Library/Fra">
+<meta property="og:description" content="人一旦有了梦想，怎么活都是有灵魂的">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://leejnull.github.io/images/og_image.png">
-<meta property="og:updated_time" content="2020-02-24T14:26:35.653Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysqlclient修复image not found">
-<meta name="twitter:description" content="Django项目要用到mysql，安装完mysqlclient之后，启动项目报错 1234567891011INFO Watching for file changes with StatReloaderException in thread django-main-thread:Traceback (most recent call last):  File &amp;quot;/Library/Fra">
+<meta name="twitter:title" content="lee的博客">
+<meta name="twitter:description" content="人一旦有了梦想，怎么活都是有灵魂的">
 <meta name="twitter:image" content="https://leejnull.github.io/images/og_image.png">
 
 
@@ -106,13 +105,13 @@ var _hmt = _hmt || [];
 
 <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="is-2-column">
+<body class="is-3-column">
     <nav class="navbar navbar-main">
     <div class="container">
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="mysqlclient修复image not found" height="28">
+                <img src="/images/logo.svg" alt="lee的博客" height="28">
             
             </a>
         </div>
@@ -159,23 +158,34 @@ var _hmt = _hmt || [];
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
+    <div class="card-content">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="/tags">标签</a></li>
+            <li class="is-active"><a href="#" aria-current="page">日常开发</a></li>
+        </ul>
+        </nav>
+    </div>
+</div>
+
+    <div class="card">
     
     <div class="card-content article ">
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-02-24T14:16:24.000Z">2020-02-24</time>
+                <time class="level-item has-text-grey" datetime="2020-03-10T06:47:33.000Z">2020-03-10</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Python/">Python</a>
+                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    3 分钟 读完 (大约 400 个字)
+                    几秒 读完 (大约 99 个字)
                 </span>
                 
                 
@@ -184,36 +194,14 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                mysqlclient修复image not found
+                <a class="has-link-black-ter" href="/2020/03/10/2020-03-10-01/">设置navigationItem</a>
             
         </h1>
         <div class="content">
-            <p>Django项目要用到mysql，安装完mysqlclient之后，启动项目报错</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">INFO Watching for file changes with StatReloader</span><br><span class="line">Exception in thread django-main-thread:</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/django/db/backends/mysql/base.py&quot;, line 16, in &lt;module&gt;</span><br><span class="line">    import MySQLdb as Database</span><br><span class="line">  File &quot;/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/MySQLdb/__init__.py&quot;, line 18, in &lt;module&gt;</span><br><span class="line">    from . import _mysql</span><br><span class="line">ImportError: dlopen(/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/MySQLdb/_mysql.cpython-38-darwin.so, 2): Library not loaded: /usr/local/opt/mysql/lib/libmysqlclient.20.dylib</span><br><span class="line">  Referenced from: /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/MySQLdb/_mysql.cpython-38-darwin.so</span><br><span class="line">  Reason: image not found</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+            <p>在设置navigationItem的时候，如果要添加图片，图片大小无法自己控制，只能用默认的图片大小，解决方法：把button放在一个view上，设置view的frame即可</p>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> view = <span class="hljs-type">UIView</span>(frame: <span class="hljs-type">CGRect</span>(x: <span class="hljs-number">0</span>, y: <span class="hljs-number">0</span>, width: <span class="hljs-number">25</span>, height: <span class="hljs-number">25</span>))</span><br><span class="line"><span class="hljs-keyword">let</span> button = <span class="hljs-type">UIButton</span>(type: .custom)</span><br><span class="line">button.frame = view.frame</span><br><span class="line">button.setImage(<span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"settings"</span>), <span class="hljs-keyword">for</span>: .normal)</span><br><span class="line">view.addSubview(button)</span><br><span class="line"><span class="hljs-keyword">let</span> buttonItem = <span class="hljs-type">UIBarButtonItem</span>(customView: view)</span><br><span class="line"><span class="hljs-keyword">self</span>.navigationItem.setLeftBarButton(buttonItem, animated: <span class="hljs-literal">true</span>)</span><br></pre></td></tr></table></figure>
 
-<a id="more"></a>
 
-<p>后面部分省略，主要看这部分，提示找不到libmysqlclient.20.dylib，之前为了安装mysqlclient，折腾了一大堆，brew update &amp;&amp; brew upgrade，mysql又重新装了一遍，可能是由于这些原因导致的。</p>
-<p>打印显示该目录下有一个libmysqlclient.21.dylib</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-rw-r--r--    1 lijun  staff   7.0M  2 24 22:11 libmysqlclient.21.dylib</span><br><span class="line">-r--r--r--    1 lijun  staff   7.7M 12 10 04:11 libmysqlclient.a</span><br><span class="line">lrwxr-xr-x    1 lijun  staff    23B 12 10 04:11 libmysqlclient.dylib -&gt; libmysqlclient.21.dylib</span><br><span class="line">-r--r--r--    1 lijun  staff   683K  2 24 21:48 libmysqlharness.1.dylib</span><br><span class="line">-r--r--r--    1 lijun  staff   7.8M  2 24 21:48 libmysqlrouter.1.dylib</span><br><span class="line">-r--r--r--    1 lijun  staff   254K  2 24 21:48 libmysqlrouter_http.1.dylib</span><br><span class="line">-r--r--r--    1 lijun  staff   9.5K 12 10 04:11 libmysqlservices.a</span><br><span class="line">drwxr-xr-x   13 lijun  staff   416B 12 10 04:11 mysqlrouter</span><br><span class="line">drwxr-xr-x    3 lijun  staff    96B  2 24 21:48 pkgconfig</span><br><span class="line">drwxr-xr-x  105 lijun  staff   3.3K 12 10 04:11 plugin</span><br></pre></td></tr></table></figure>
-
-<p>索性想能不能加一个指向libmysqlclient.21.dylib的软连接libmysqlclient.20.dylib</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -sfv /usr/local/opt/mysql/lib/libmysqlclient.21.dylib /usr/local/opt/mysql/lib/libmysqlclient.20.dylib</span><br></pre></td></tr></table></figure>
-
-<p>重新运行项目</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">python3.8 manage.py runserver                                                                                                          [22:11:52]</span><br><span class="line">INFO Watching for file changes with StatReloader</span><br><span class="line">Performing system checks...</span><br><span class="line"></span><br><span class="line">System check identified no issues (0 silenced).</span><br><span class="line"></span><br><span class="line">You have 20 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, book, contenttypes, crawler, sessions, user.</span><br><span class="line">Run &apos;python manage.py migrate&apos; to apply them.</span><br><span class="line"></span><br><span class="line">February 24, 2020 - 22:14:58</span><br><span class="line">Django version 3.0.3, using settings &apos;bookstore.settings&apos;</span><br><span class="line">Starting development server at http://127.0.0.1:8000/</span><br><span class="line">Quit the server with CONTROL-C.</span><br></pre></td></tr></table></figure>
-
-<p>OK，解决~</p>
-
-        </div>
-        
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/Django/">Django</a>, <a class="has-link-grey -link" href="/tags/Mysql/">Mysql</a>, <a class="has-link-grey -link" href="/tags/Python/">Python</a>
-                </div>
-            </div>
         </div>
         
         
@@ -223,87 +211,18 @@ var _hmt = _hmt || [];
 
 
 
-<div class="card">
-    <div class="card-content">
-        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
-        <div class="buttons is-centered">
-            
-                
-<a class="button is-info donate">
-    <span class="icon is-small">
-        <i class="fab fa-alipay"></i>
-    </span>
-    <span>支付宝</span>
-    <div class="qrcode"><img src="/images/alipay.jpg" alt="支付宝"></div>
-</a>
-
-                
-                
-<a class="button is-success donate">
-    <span class="icon is-small">
-        <i class="fab fa-weixin"></i>
-    </span>
-    <span>微信</span>
-    <div class="qrcode"><img src="/images/wechatpay.jpg" alt="微信"></div>
-</a>
-
-                
-        </div>
-    </div>
-</div>
 
 
 
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/03/01/2020-03-01-01/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">写于2020.03.01 23:58</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2020/02/24/2020-02-24-01/">
-                <span class="level-item">安装mysqlclient报错</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
-    </div>
-</div>
 
 
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">评论</h3>
-        
-<div id="valine-thread" class="content"></div>
-<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-<script>
-    new Valine({
-        el: '#valine-thread' ,
-        notify: false,
-        verify: false,
-        app_id: '7CGzybHlBx3krS6DnoSkL1BR-gzGzoHsz',
-        app_key: 'u3A9Vlz8twJRIbjVc8McLId6',
-        placeholder: '...'
-    });
-</script>
-
-    </div>
-</div>
 </div>
                 
 
 
 
 
-<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
     
         
 <div class="card widget">
@@ -523,7 +442,7 @@ var _hmt = _hmt || [];
 
     
     
-        <div class="column-right-shadow  ">
+        <div class="column-right-shadow is-hidden-widescreen ">
         
             
 <div class="card widget">
@@ -936,6 +855,423 @@ var _hmt = _hmt || [];
 </div>
 
                 
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-10T06:47:33.000Z">2020-03-10</time></div>
+                    <a href="/2020/03/10/2020-03-10-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">设置navigationItem</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-09T08:24:29.000Z">2020-03-09</time></div>
+                    <a href="/2020/03/09/2020-03-09-02/" class="title has-link-black-ter is-size-6 has-text-weight-normal">改造链表支持&#34;二分查找&#34;</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构与算法/">数据结构与算法</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-09T02:36:04.000Z">2020-03-09</time></div>
+                    <a href="/2020/03/09/2020-03-09-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">异步绘制</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-07T12:59:31.000Z">2020-03-07</time></div>
+                    <a href="/2020/03/07/2020-03-07-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">UI绘制原理</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-05T07:50:47.000Z">2020-03-05</time></div>
+                    <a href="/2020/03/05/2020-03-05-02/" class="title has-link-black-ter is-size-6 has-text-weight-normal">事件响应和传递</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">10</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">7</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">8</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Django/">
+                        <span class="tag">Django</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Event/">
+                        <span class="tag">Event</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Mac使用/">
+                        <span class="tag">Mac使用</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/MarkDown/">
+                        <span class="tag">MarkDown</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Mysql/">
+                        <span class="tag">Mysql</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Python/">
+                        <span class="tag">Python</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/RunLoop/">
+                        <span class="tag">RunLoop</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Swift/">
+                        <span class="tag">Swift</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/flag/">
+                        <span class="tag">flag</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/iOS/">
+                        <span class="tag">iOS</span>
+                        <span class="tag is-grey">7</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/import/">
+                        <span class="tag">import</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/package/">
+                        <span class="tag">package</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/pip/">
+                        <span class="tag">pip</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sql/">
+                        <span class="tag">sql</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/位运算/">
+                        <span class="tag">位运算</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/基础/">
+                        <span class="tag">基础</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/多线程/">
+                        <span class="tag">多线程</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/字符串/">
+                        <span class="tag">字符串</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/学习笔记/">
+                        <span class="tag">学习笔记</span>
+                        <span class="tag is-grey">12</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/小感想/">
+                        <span class="tag">小感想</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/小技巧/">
+                        <span class="tag">小技巧</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/并发/">
+                        <span class="tag">并发</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/底层/">
+                        <span class="tag">底层</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/性能/">
+                        <span class="tag">性能</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/报错/">
+                        <span class="tag">报错</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/排序/">
+                        <span class="tag">排序</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/数据结构/">
+                        <span class="tag">数据结构</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/日常反思/">
+                        <span class="tag">日常反思</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/日常开发/">
+                        <span class="tag">日常开发</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/正则表达式/">
+                        <span class="tag">正则表达式</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/算法/">
+                        <span class="tag">算法</span>
+                        <span class="tag is-grey">8</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/翻译/">
+                        <span class="tag">翻译</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/链表/">
+                        <span class="tag">链表</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/队列/">
+                        <span class="tag">队列</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+</div>
+
+                
             </div>
         </div>
     </section>
@@ -945,7 +1281,7 @@ var _hmt = _hmt || [];
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.svg" alt="mysqlclient修复image not found" height="28">
+                    <img src="/images/logo.svg" alt="lee的博客" height="28">
                 
                 </a>
                 <p class="is-size-7">
