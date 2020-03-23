@@ -7,14 +7,14 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>标签: 翻译 - lee的博客</title>
+<title>标签: KVC - lee的博客</title>
 
 
     <meta name="description" content="人一旦有了梦想，怎么活都是有灵魂的">
 <meta name="keywords" content="Go Python iOS 全栈">
 <meta property="og:type" content="website">
 <meta property="og:title" content="lee的博客">
-<meta property="og:url" content="https://leejnull.github.io/tags/翻译/index.html">
+<meta property="og:url" content="https://leejnull.github.io/tags/KVC/index.html">
 <meta property="og:site_name" content="lee的博客">
 <meta property="og:description" content="人一旦有了梦想，怎么活都是有灵魂的">
 <meta property="og:locale" content="zh-CN">
@@ -163,7 +163,7 @@ var _hmt = _hmt || [];
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             <li><a href="/tags">标签</a></li>
-            <li class="is-active"><a href="#" aria-current="page">翻译</a></li>
+            <li class="is-active"><a href="#" aria-current="page">KVC</a></li>
         </ul>
         </nav>
     </div>
@@ -175,7 +175,7 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-12-27T05:44:33.000Z">2019-12-27</time>
+                <time class="level-item has-text-grey" datetime="2020-03-23T08:26:49.000Z">2020-03-23</time>
                 
                 <div class="level-item">
                 <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
@@ -185,7 +185,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    1 小时 读完 (大约 10661 个字)
+                    15 分钟 读完 (大约 2275 个字)
                 </span>
                 
                 
@@ -194,19 +194,28 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/12/27/2019-12-27-02/">Run Loops 翻译篇</a>
+                <a class="has-link-black-ter" href="/2020/03/23/2020-03-23-01/">关于KVC</a>
             
         </h1>
         <div class="content">
-            <h4 id="Run-Loops"><a href="#Run-Loops" class="headerlink" title="Run Loops"></a>Run Loops</h4><p><a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html" target="_blank" rel="noopener">官方文档</a></p>
-<p>Run Loops 是与线程相关的基础架构的一部分。一个 run loop 是一个事件处理循环，你使用来调度工作和协调收到的事件。run loop 的目的是有工作做的时候保持线程忙碌，没有事做的时候让线程睡眠。<br>Run loop 的管理并不是全自动的。你仍然必须设计你的线程在合适的时候启动 run loop 并响应即将到来的事件。Cocoa 和 Core Foundation 都提供了 run loop 对象来帮助配置和管理线程的 run loop。你的应用不需要显式的创建这些对象；每个线程，包括应用的主线程，有一个相关联的 run loop 对象。只是非主线程需要显式的跑它们的 run loop。App 框架会自动设置并跑起主线程上的 run loop，作为应用启动的一部分。<br>下面的部分提供了更多关于 run loops 的信息，怎么为你的应用配置它们。需要查看更多的信息，可以参见<em>NSRunLoop Class Reference</em> 和 <em>CFRunLoop Reference</em></p>
+            <h2 id="键值编码"><a href="#键值编码" class="headerlink" title="键值编码"></a>键值编码</h2><p>在iOS开发中，允许通过key名直接访问或者赋值对象的属性，而不用通过存取方法。这样就可以在运行时动态的访问和修改对象的属性，而不是在编译时确定。</p>
+<h2 id="定义与使用"><a href="#定义与使用" class="headerlink" title="定义与使用"></a>定义与使用</h2><p>KVC的定义是通过对NSObject的扩展来实现的，有个显示的NSKeyValueCoding类别名，对于所有继承了NSObject的类型，都能使用KVC。</p>
+<h2 id="寻找key"><a href="#寻找key" class="headerlink" title="寻找key"></a>寻找key</h2><p>我们可以在Xcode里面，打开NSKeyValueCoding.h文件，里面有关于KVC的完整介绍。</p>
+<h3 id="valueForKey"><a href="#valueForKey" class="headerlink" title="valueForKey:"></a>valueForKey:</h3><ol>
+<li>首先按照-get&lt;Key&gt;, -&lt;key&gt;, or -is&lt;Key&gt;的顺序来查找，如果找到的值是一个object类型就直接返回，如果是一个数据类型就会转换成NSNumber对象返回，如果是结构体类型（不仅限于：NSPoint，NSRange，NSRect，NSSize），就转换成NSValues返回</li>
+<li>如果上面没有找到，就会开始查找下面几个方法-countOf&lt;Key&gt; 、 -indexIn&lt;Key&gt;OfObject: 、-objectIn&lt;Key&gt;AtIndex: 、 -&lt;key&gt;AtIndexes: 只要-countOf&lt;Key&gt;和-indexIn&lt;Key&gt;OfObject:和后面两个至少一个方法被发现了，就会返回一个可以相应所有NSOrderedSet方法的集合代理对象。所有的NSOrderedSet消息都会被发送到这个对象上，并且将会以组合的形式调用-countOf&lt;Key&gt;, -indexIn&lt;Key&gt;OfObject:, -objectIn&lt;Key&gt;AtIndex:, and -&lt;key&gt;AtIndexes:这几个方法，发送到-valueForKey:上。如果对象的类实现了一个可选的函数-get&lt;Key&gt;:range:那么也会被调用（提高性能）。</li>
+<li>查找-countOf&lt;Key&gt; and -objectIn&lt;Key&gt;AtIndex: （匹配NSArray类），-&lt;key&gt;AtIndexes:（匹配-[NSArray objectsAtIndexes:]）。count方法和另外两个中的至少一个被发现，返回一个响应所有NSArray方法的集合协议对象。每一个NSArray消息都有该对象响应，并以-countOf&lt;Key&gt;, -objectIn&lt;Key&gt;AtIndex:, and -&lt;key&gt;AtIndexes:一些组合（组合规则如前面所说）的形式被发送到原始接受者的valueForKey上。如果这个接受者的类实现了-get&lt;Key&gt;:range: 那么会调用，可以有更好的性能。</li>
+<li>继续没有找到的话，就开始匹配-countOf&lt;Key&gt;, -enumeratorOf&lt;Key&gt;, and -memberOf&lt;Key&gt;这三个方法，如果这个三个方法都找到的话，就返回一个响应所有NSSet方法的集合协议对象。每一个NSSet消息都会发送给集合协议对象，然后该对象就会以-countOf&lt;Key&gt;, -enumeratorOf&lt;Key&gt;, and -memberOf&lt;Key&gt;三者组合的形式响应。</li>
+<li>还没有找到的话，就检查+accessInstanceVariablesDirectly属性，如果返回YES，就按_&lt;key&gt;, _is&lt;Key&gt;, &lt;key&gt;, or is&lt;Key&gt;查找，找到了就直接返回，一些属性会以NSNumber或NSValue 的形式返回如前面所说。</li>
+<li>上面条件都不满足，就调用-valueForUndefinedKey:我们可以重写这个方法。默认实现是抛一个NSUndefinedKeyException异常</li>
+</ol>
         </div>
         
         
         <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/12/27/2019-12-27-02/#more">阅读更多</a>
+                <a class="button is-size-7 is-light" href="/2020/03/23/2020-03-23-01/#more">阅读更多</a>
                 </div>
             </div>
         </div>

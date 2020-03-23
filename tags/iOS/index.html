@@ -175,6 +175,68 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-03-23T08:26:49.000Z">2020-03-23</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    15 分钟 读完 (大约 2275 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/23/2020-03-23-01/">关于KVC</a>
+            
+        </h1>
+        <div class="content">
+            <h2 id="键值编码"><a href="#键值编码" class="headerlink" title="键值编码"></a>键值编码</h2><p>在iOS开发中，允许通过key名直接访问或者赋值对象的属性，而不用通过存取方法。这样就可以在运行时动态的访问和修改对象的属性，而不是在编译时确定。</p>
+<h2 id="定义与使用"><a href="#定义与使用" class="headerlink" title="定义与使用"></a>定义与使用</h2><p>KVC的定义是通过对NSObject的扩展来实现的，有个显示的NSKeyValueCoding类别名，对于所有继承了NSObject的类型，都能使用KVC。</p>
+<h2 id="寻找key"><a href="#寻找key" class="headerlink" title="寻找key"></a>寻找key</h2><p>我们可以在Xcode里面，打开NSKeyValueCoding.h文件，里面有关于KVC的完整介绍。</p>
+<h3 id="valueForKey"><a href="#valueForKey" class="headerlink" title="valueForKey:"></a>valueForKey:</h3><ol>
+<li>首先按照-get&lt;Key&gt;, -&lt;key&gt;, or -is&lt;Key&gt;的顺序来查找，如果找到的值是一个object类型就直接返回，如果是一个数据类型就会转换成NSNumber对象返回，如果是结构体类型（不仅限于：NSPoint，NSRange，NSRect，NSSize），就转换成NSValues返回</li>
+<li>如果上面没有找到，就会开始查找下面几个方法-countOf&lt;Key&gt; 、 -indexIn&lt;Key&gt;OfObject: 、-objectIn&lt;Key&gt;AtIndex: 、 -&lt;key&gt;AtIndexes: 只要-countOf&lt;Key&gt;和-indexIn&lt;Key&gt;OfObject:和后面两个至少一个方法被发现了，就会返回一个可以相应所有NSOrderedSet方法的集合代理对象。所有的NSOrderedSet消息都会被发送到这个对象上，并且将会以组合的形式调用-countOf&lt;Key&gt;, -indexIn&lt;Key&gt;OfObject:, -objectIn&lt;Key&gt;AtIndex:, and -&lt;key&gt;AtIndexes:这几个方法，发送到-valueForKey:上。如果对象的类实现了一个可选的函数-get&lt;Key&gt;:range:那么也会被调用（提高性能）。</li>
+<li>查找-countOf&lt;Key&gt; and -objectIn&lt;Key&gt;AtIndex: （匹配NSArray类），-&lt;key&gt;AtIndexes:（匹配-[NSArray objectsAtIndexes:]）。count方法和另外两个中的至少一个被发现，返回一个响应所有NSArray方法的集合协议对象。每一个NSArray消息都有该对象响应，并以-countOf&lt;Key&gt;, -objectIn&lt;Key&gt;AtIndex:, and -&lt;key&gt;AtIndexes:一些组合（组合规则如前面所说）的形式被发送到原始接受者的valueForKey上。如果这个接受者的类实现了-get&lt;Key&gt;:range: 那么会调用，可以有更好的性能。</li>
+<li>继续没有找到的话，就开始匹配-countOf&lt;Key&gt;, -enumeratorOf&lt;Key&gt;, and -memberOf&lt;Key&gt;这三个方法，如果这个三个方法都找到的话，就返回一个响应所有NSSet方法的集合协议对象。每一个NSSet消息都会发送给集合协议对象，然后该对象就会以-countOf&lt;Key&gt;, -enumeratorOf&lt;Key&gt;, and -memberOf&lt;Key&gt;三者组合的形式响应。</li>
+<li>还没有找到的话，就检查+accessInstanceVariablesDirectly属性，如果返回YES，就按_&lt;key&gt;, _is&lt;Key&gt;, &lt;key&gt;, or is&lt;Key&gt;查找，找到了就直接返回，一些属性会以NSNumber或NSValue 的形式返回如前面所说。</li>
+<li>上面条件都不满足，就调用-valueForUndefinedKey:我们可以重写这个方法。默认实现是抛一个NSUndefinedKeyException异常</li>
+</ol>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2020/03/23/2020-03-23-01/#more">阅读更多</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-03-21T01:32:22.000Z">2020-03-21</time>
                 
                 <div class="level-item">
@@ -660,61 +722,6 @@ var _hmt = _hmt || [];
 
 
 
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-01-03T01:32:26.000Z">2020-01-03</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    4 分钟 读完 (大约 565 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/01/03/2020-01-03-01/">Swift与OC的运行时特性</a>
-            
-        </h1>
-        <div class="content">
-            <h4 id="OC运行时"><a href="#OC运行时" class="headerlink" title="OC运行时"></a>OC运行时</h4><ul>
-<li>动态类型</li>
-<li>动态绑定</li>
-<li>动态装载</li></ul>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/01/03/2020-01-03-01/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -777,7 +784,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        36
+                        37
                     </p>
                 </div>
             </div>
@@ -797,7 +804,7 @@ var _hmt = _hmt || [];
                         标签
                     </p>
                     <p class="title has-text-weight-normal">
-                        39
+                        40
                     </p>
                 </div>
             </div>
@@ -908,7 +915,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">iOS</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">12</span>
+                <span class="level-item tag">13</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/数据库/">
@@ -954,7 +961,7 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/Crash/" style="font-size: 10px;">Crash</a> <a href="/tags/Django/" style="font-size: 12px;">Django</a> <a href="/tags/Event/" style="font-size: 10px;">Event</a> <a href="/tags/KVO/" style="font-size: 10px;">KVO</a> <a href="/tags/Mac使用/" style="font-size: 12px;">Mac使用</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Mysql/" style="font-size: 10px;">Mysql</a> <a href="/tags/Python/" style="font-size: 12px;">Python</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Swift/" style="font-size: 12px;">Swift</a> <a href="/tags/Xcode/" style="font-size: 10px;">Xcode</a> <a href="/tags/flag/" style="font-size: 10px;">flag</a> <a href="/tags/iOS/" style="font-size: 18px;">iOS</a> <a href="/tags/import/" style="font-size: 10px;">import</a> <a href="/tags/package/" style="font-size: 10px;">package</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/sql/" style="font-size: 12px;">sql</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/位运算/" style="font-size: 10px;">位运算</a> <a href="/tags/原理/" style="font-size: 10px;">原理</a> <a href="/tags/基础/" style="font-size: 12px;">基础</a> <a href="/tags/多线程/" style="font-size: 10px;">多线程</a> <a href="/tags/字符串/" style="font-size: 10px;">字符串</a> <a href="/tags/学习笔记/" style="font-size: 20px;">学习笔记</a> <a href="/tags/小感想/" style="font-size: 10px;">小感想</a> <a href="/tags/小技巧/" style="font-size: 10px;">小技巧</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/底层/" style="font-size: 12px;">底层</a> <a href="/tags/性能/" style="font-size: 10px;">性能</a> <a href="/tags/报错/" style="font-size: 10px;">报错</a> <a href="/tags/排序/" style="font-size: 14px;">排序</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/日常反思/" style="font-size: 10px;">日常反思</a> <a href="/tags/日常开发/" style="font-size: 12px;">日常开发</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/算法/" style="font-size: 16px;">算法</a> <a href="/tags/翻译/" style="font-size: 10px;">翻译</a> <a href="/tags/链表/" style="font-size: 10px;">链表</a> <a href="/tags/队列/" style="font-size: 10px;">队列</a>
+        <a href="/tags/Crash/" style="font-size: 10px;">Crash</a> <a href="/tags/Django/" style="font-size: 12px;">Django</a> <a href="/tags/Event/" style="font-size: 10px;">Event</a> <a href="/tags/KVC/" style="font-size: 10px;">KVC</a> <a href="/tags/KVO/" style="font-size: 10px;">KVO</a> <a href="/tags/Mac使用/" style="font-size: 12px;">Mac使用</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Mysql/" style="font-size: 10px;">Mysql</a> <a href="/tags/Python/" style="font-size: 12px;">Python</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Swift/" style="font-size: 12px;">Swift</a> <a href="/tags/Xcode/" style="font-size: 10px;">Xcode</a> <a href="/tags/flag/" style="font-size: 10px;">flag</a> <a href="/tags/iOS/" style="font-size: 18px;">iOS</a> <a href="/tags/import/" style="font-size: 10px;">import</a> <a href="/tags/package/" style="font-size: 10px;">package</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/sql/" style="font-size: 12px;">sql</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/位运算/" style="font-size: 10px;">位运算</a> <a href="/tags/原理/" style="font-size: 10px;">原理</a> <a href="/tags/基础/" style="font-size: 12px;">基础</a> <a href="/tags/多线程/" style="font-size: 10px;">多线程</a> <a href="/tags/字符串/" style="font-size: 10px;">字符串</a> <a href="/tags/学习笔记/" style="font-size: 20px;">学习笔记</a> <a href="/tags/小感想/" style="font-size: 10px;">小感想</a> <a href="/tags/小技巧/" style="font-size: 10px;">小技巧</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/底层/" style="font-size: 12px;">底层</a> <a href="/tags/性能/" style="font-size: 10px;">性能</a> <a href="/tags/报错/" style="font-size: 10px;">报错</a> <a href="/tags/排序/" style="font-size: 14px;">排序</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/日常反思/" style="font-size: 10px;">日常反思</a> <a href="/tags/日常开发/" style="font-size: 12px;">日常开发</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/算法/" style="font-size: 16px;">算法</a> <a href="/tags/翻译/" style="font-size: 10px;">翻译</a> <a href="/tags/链表/" style="font-size: 10px;">链表</a> <a href="/tags/队列/" style="font-size: 10px;">队列</a>
     </div>
 </div>
 
@@ -968,6 +975,19 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             最新文章
         </h3>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-23T08:26:49.000Z">2020-03-23</time></div>
+                    <a href="/2020/03/23/2020-03-23-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">关于KVC</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1021,19 +1041,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-10T06:47:33.000Z">2020-03-10</time></div>
-                    <a href="/2020/03/10/2020-03-10-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">设置navigationItem</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1052,7 +1059,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">三月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">14</span>
+                    <span class="level-item tag">15</span>
                 </span>
             </a>
         </li>
@@ -1147,6 +1154,13 @@ var _hmt = _hmt || [];
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/KVC/">
+                        <span class="tag">KVC</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/KVO/">
                         <span class="tag">KVO</span>
                         <span class="tag is-grey">1</span>
@@ -1212,7 +1226,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/iOS/">
                         <span class="tag">iOS</span>
-                        <span class="tag is-grey">11</span>
+                        <span class="tag is-grey">12</span>
                     </a>
                 </div>
                 
@@ -1289,7 +1303,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/学习笔记/">
                         <span class="tag">学习笔记</span>
-                        <span class="tag is-grey">12</span>
+                        <span class="tag is-grey">13</span>
                     </a>
                 </div>
                 
@@ -1426,6 +1440,19 @@ var _hmt = _hmt || [];
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-23T08:26:49.000Z">2020-03-23</time></div>
+                    <a href="/2020/03/23/2020-03-23-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">关于KVC</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-21T01:32:22.000Z">2020-03-21</time></div>
                     <a href="/2020/03/21/2020-03-21-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Xcode真机运行crash dyld: Library not loaded</a>
                     <p class="is-size-7 is-uppercase">
@@ -1474,19 +1501,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-10T06:47:33.000Z">2020-03-10</time></div>
-                    <a href="/2020/03/10/2020-03-10-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">设置navigationItem</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1505,7 +1519,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">三月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">14</span>
+                    <span class="level-item tag">15</span>
                 </span>
             </a>
         </li>
@@ -1600,6 +1614,13 @@ var _hmt = _hmt || [];
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/KVC/">
+                        <span class="tag">KVC</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/KVO/">
                         <span class="tag">KVO</span>
                         <span class="tag is-grey">1</span>
@@ -1665,7 +1686,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/iOS/">
                         <span class="tag">iOS</span>
-                        <span class="tag is-grey">11</span>
+                        <span class="tag is-grey">12</span>
                     </a>
                 </div>
                 
@@ -1742,7 +1763,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/学习笔记/">
                         <span class="tag">学习笔记</span>
-                        <span class="tag is-grey">12</span>
+                        <span class="tag is-grey">13</span>
                     </a>
                 </div>
                 
