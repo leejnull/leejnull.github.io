@@ -7,14 +7,14 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>标签: Event - lee的博客</title>
+<title>标签: runtime - lee的博客</title>
 
 
     <meta name="description" content="人一旦有了梦想，怎么活都是有灵魂的">
 <meta name="keywords" content="Go Python iOS 全栈">
 <meta property="og:type" content="website">
 <meta property="og:title" content="lee的博客">
-<meta property="og:url" content="https://leejnull.github.io/tags/Event/index.html">
+<meta property="og:url" content="https://leejnull.github.io/tags/runtime/index.html">
 <meta property="og:site_name" content="lee的博客">
 <meta property="og:description" content="人一旦有了梦想，怎么活都是有灵魂的">
 <meta property="og:locale" content="zh-CN">
@@ -163,7 +163,7 @@ var _hmt = _hmt || [];
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             <li><a href="/tags">标签</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Event</a></li>
+            <li class="is-active"><a href="#" aria-current="page">runtime</a></li>
         </ul>
         </nav>
     </div>
@@ -175,7 +175,7 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-05T07:50:47.000Z">2020-03-05</time>
+                <time class="level-item has-text-grey" datetime="2020-03-24T16:07:42.000Z">2020-03-25</time>
                 
                 <div class="level-item">
                 <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
@@ -185,7 +185,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    5 分钟 读完 (大约 732 个字)
+                    19 分钟 读完 (大约 2872 个字)
                 </span>
                 
                 
@@ -194,22 +194,38 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2020/03/05/2020-03-05-02/">事件响应和传递</a>
+                <a class="has-link-black-ter" href="/2020/03/25/2020-03-25-01/">了解Category</a>
             
         </h1>
         <div class="content">
-            <blockquote>
-<p>iOS设备会产生各种事件：触摸、晃动设备、远程控制等，事件发生了就需要有响应者去接收并处理事件，这就形成了一套事件响应机制。</p>
-</blockquote>
-<h4 id="事件类型"><a href="#事件类型" class="headerlink" title="事件类型"></a>事件类型</h4><p>在iOS开发中，UIEventType定义了四种事件类型。</p>
-<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">typedef</span> <span class="hljs-built_in">NS_ENUM</span>(<span class="hljs-built_in">NSInteger</span>, <span class="hljs-built_in">UIEventType</span>) &#123;</span><br><span class="line">    <span class="hljs-built_in">UIEventTypeTouches</span>,	<span class="hljs-comment">// 最常接触的事件</span></span><br><span class="line">    <span class="hljs-built_in">UIEventTypeMotion</span>,	<span class="hljs-comment">// 加速计，手机摇一摇</span></span><br><span class="line">    <span class="hljs-built_in">UIEventTypeRemoteControl</span>,		<span class="hljs-comment">// 远程控制，例如一些音乐APP的耳机控制</span></span><br><span class="line">    <span class="hljs-built_in">UIEventTypePresses</span> API_AVAILABLE(ios(<span class="hljs-number">9.0</span>)),	<span class="hljs-comment">// 一般碰不到，指的是物理按键被按下，例如电视的遥控器。</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+            <h2 id="简单了解"><a href="#简单了解" class="headerlink" title="简单了解"></a>简单了解</h2><p>OC2.0之后添加的语言特性，主要为已经存在的类添加方法。<br>Apple推荐的两个使用场景：</p>
+<ol>
+<li>把类的实现分开在不同的文件里面。<ol>
+<li>可以减少单个文件的体积</li>
+<li>可以把不同的功能组织到不同的Category里</li>
+<li>可以由多个开发者共同开发一个类</li>
+<li>可以按需加载想要的Category</li>
+</ol>
+</li>
+<li>声明私有方法</li>
+</ol>
+<p>衍生的使用场景：</p>
+<ol>
+<li>模拟多继承</li>
+<li>把framework的私有方法公开</li>
+</ol>
+<h2 id="和extension区别"><a href="#和extension区别" class="headerlink" title="和extension区别"></a>和extension区别</h2><ol>
+<li>extension在编译器决定，它就是类的一部分，在编译期和头文件里的@interface和实现文件里的@implementation一起形成一个完整的类。它伴随类的产生而产生，也随类一起消亡。</li>
+<li>extension一般用来隐藏类的私有信息，你必须有一个类的源码才能为一个类添加extension，我们无法为系统类比如NSString添加extension。</li>
+<li>category是在运行期决定的。</li>
+<li>category无法添加实例变量，而extension可以。因为在运行期，对象的内存布局已经确定，如果添加实例变量就会破坏类的内部布局。</li></ol>
         </div>
         
         
         <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/03/05/2020-03-05-02/#more">阅读更多</a>
+                <a class="button is-size-7 is-light" href="/2020/03/25/2020-03-25-01/#more">阅读更多</a>
                 </div>
             </div>
         </div>
