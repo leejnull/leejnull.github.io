@@ -165,6 +165,137 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-07-15T11:52:08.000Z">2020-07-15</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    5 分钟 读完 (大约 815 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/07/15/如何继承一个带有Xib的ViewController/">如何继承一个带有Xib的ViewController</a>
+            
+        </h1>
+        <div class="content">
+            <h2 id="先来看看一个UIViewController的初始化过程"><a href="#先来看看一个UIViewController的初始化过程" class="headerlink" title="先来看看一个UIViewController的初始化过程"></a>先来看看一个UIViewController的初始化过程</h2><p><img src="/images/2020-07-15-01.png" alt></p>
+<p>如果这个ViewController是在Storyboard创建显示的，那么会走initWithCode的方法，否则都会走initWithNibName:bundle。</p>
+<p>但是我们发现，在展示一个Xib的UIViewController和纯代码的UIViewController的时候，他们的方式是一样的，即</p>
+<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">XibViewController *ctrl = [[XibViewController alloc] init];</span><br><span class="line">[<span class="hljs-keyword">self</span>.navigationController pushViewController:ctrl animated:<span class="hljs-literal">YES</span>];</span><br></pre></td></tr></table></figure>
+
+<p>而且打印发现，传入的nib name都是null</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2020-07-15 19:03:00.721069+0800 AwesomeOC[19613:229780] XibViewController init with nib name: (null) | (null)</span><br></pre></td></tr></table></figure>
+
+<p>那么xib上的视图又是什么时候关联到对应的ViewController上的呢？</p>
+<h2 id="loadView的作用"><a href="#loadView的作用" class="headerlink" title="loadView的作用"></a>loadView的作用</h2><blockquote>
+<p>这个方法中，要正式加载View了。首先我们得知道，控制器 view 是通过懒加载的方式进行加载的，即用到的时候再加载。永远不要主动调用这个方法。当我们用到控制器 view 时，就会调用控制器 view 的 get 方法，在 get 方法内部，首先判断 view 是否已经创建，如果已存在，则直接返回存在的 view，如果不存在，则调用控制器的 loadView 方法，在控制器没有被销毁的情况下，loadView 也可能会被执行多次。  </p>
+</blockquote>
+<p>当ViewController有以下情况时，都会在此方法中从nib文件加载view：</p>
+<ul>
+<li>ViewController是通过storyboard中实例化的</li>
+<li>通过initWithNibName:bundle:初始化</li>
+<li>在App Bundle中有一个nib文件名称和本类名相同</li>
+</ul>
+<p>所以，当我们push一个带有xib的ViewController时，虽然和纯代码创建的ViewController一样初始化都是传入的nil，但是在loadView这一步会加载对应nib文件中的view。而没有关联xib文件的ViewController，就会默认创建一个空白的UIView对象，然后让这个对象成为ViewController的主view。</p>
+<h2 id="那么该如何继承"><a href="#那么该如何继承" class="headerlink" title="那么该如何继承"></a>那么该如何继承</h2><p>在ViewController的生命周期中，在loadView那一步才算是真正的把View关联到ViewController上，在这一步，默认是一个空白的View，如果有对应nib文件或指定了nib文件，那么就从nib文件加载，还可以自定义view然后关联到ViewController上。</p>
+<p>所以要想实现继承ViewController，复用父ViewController的页面的话，那么就要想办法加载到父ViewController的view。<br>现在默认有这样两个ViewController<br><img src="/images/2020-07-15-02.png" alt></p>
+<p>SubXibViewController继承自XibViewController。</p>
+<p>当我用普通的方式展示SubXibViewController的时候。</p>
+<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SubXibViewController *ctrl = [[SubXibViewController alloc] init];</span><br><span class="line">[<span class="hljs-keyword">self</span>.navigationController pushViewController:ctrl animated:<span class="hljs-literal">YES</span>];</span><br></pre></td></tr></table></figure>
+
+<p>SubXibViewController不符合从nib文件加载view的三个条件，它只会创建一个空白的View。它的父VC并没有在ViewDidLoad中有任何代码创建视图的操作。</p>
+<p>我们这时候看一下条件2：通过initWithNibName:bundle:初始化。<br>也就是说，如果我们指定一个nib文件来初始化，在loadView的那一步，他就会从nib文件加载view。即</p>
+<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SubXibViewController *ctrl = [[SubXibViewController alloc] initWithNibName:<span class="hljs-string">@"XibViewController"</span> bundle:<span class="hljs-literal">nil</span>];</span><br><span class="line">[<span class="hljs-keyword">self</span>.navigationController pushViewController:ctrl animated:<span class="hljs-literal">YES</span>];</span><br></pre></td></tr></table></figure>
+
+<p>我们指定父VC的xib文件，最终效果大家可以试验一下，子VC会加载父VC的View，这样就实现了继承复用父类View的效果了！</p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-07-06T05:35:53.000Z">2020-07-06</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    3 分钟 读完 (大约 384 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/07/06/Swift-enum类型添加Codable默认值/">Swift enum类型添加Codable默认值</a>
+            
+        </h1>
+        <div class="content">
+            <p>Swift开发中在数据转model这一层，我采用了苹果官方的Codable协议来实现。Codable的具体步骤可以参考网上一大堆教程。<br>后台有时候会返回一些表示枚举的字符串数值，在转成model的过程中，会把这个字段设置成对应的Swift枚举。</p>
+<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">enum</span> ToolType: String, Codable &#123;</span><br><span class="line">    <span class="hljs-comment">/// 自行车</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Bike = <span class="hljs-string">"1"</span></span><br><span class="line">    <span class="hljs-comment">/// 电瓶车</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Electromobile = <span class="hljs-string">"2"</span></span><br><span class="line">    <span class="hljs-comment">/// 大踏板车</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Scooter = <span class="hljs-string">"3"</span></span><br><span class="line">    <span class="hljs-comment">/// 摩托车</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Motorbike = <span class="hljs-string">"4"</span></span><br><span class="line">    <span class="hljs-comment">/// 轿车</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Sedan = <span class="hljs-string">"5"</span></span><br><span class="line">    <span class="hljs-comment">/// 小货车</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Buggy = <span class="hljs-string">"6"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">struct</span> Model &#123;</span><br><span class="line">    var toolType: ToolType?</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Model: Codable &#123;</span><br><span class="line">    <span class="hljs-keyword">enum</span> CodingKeys: String, CodingKey &#123;</span><br><span class="line">        <span class="hljs-keyword">case</span> toolType = <span class="hljs-string">"tool_type"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以很方便的实现数据转model。</p>
+<h2 id="但是如果后台返回的数据对应值不止-1-6-会怎么样呢？"><a href="#但是如果后台返回的数据对应值不止-1-6-会怎么样呢？" class="headerlink" title="但是如果后台返回的数据对应值不止 1~6 会怎么样呢？"></a>但是如果后台返回的数据对应值不止 1~6 会怎么样呢？</h2><p>答案是解析会抛出异常直接报错。</p>
+<p>当数据转model的时候，实际调用的是这个方法</p>
+<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">init(from decoder: Decoder) throws</span><br></pre></td></tr></table></figure>
+
+<p>如果出现value和enum的值都匹配不上的情况，并不会返回nil而是直接抛出异常。</p>
+<p><strong>所以我们要做的就是当解析出错的时候设置一个默认值</strong></p>
+<h2 id="通过extension给Codable协议添加默认值"><a href="#通过extension给Codable协议添加默认值" class="headerlink" title="通过extension给Codable协议添加默认值"></a>通过extension给Codable协议添加默认值</h2><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">protocol CaseIterableDefaultsLast: Encodable &amp; Decodable &amp; CaseIterable &amp; RawRepresentable where RawValue: Decodable, AllCases: BidirectionalCollection &#123;&#125;</span><br><span class="line"></span><br><span class="line">extension CaseIterableDefaultsLast &#123;</span><br><span class="line">    init(from decoder: Decoder) throws &#123;</span><br><span class="line">        <span class="hljs-keyword">self</span> = try Self(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? Self.allCases.last!</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">enum</span> ToolType: String, CaseIterableDefaultsLast &#123;</span><br><span class="line">    <span class="hljs-comment">/// 自行车</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Bike = <span class="hljs-string">"1"</span></span><br><span class="line">    <span class="hljs-comment">/// 电瓶车</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Electromobile = <span class="hljs-string">"2"</span></span><br><span class="line">    <span class="hljs-comment">/// 大踏板车</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Scooter = <span class="hljs-string">"3"</span></span><br><span class="line">    <span class="hljs-comment">/// 摩托车</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Motorbike = <span class="hljs-string">"4"</span></span><br><span class="line">    <span class="hljs-comment">/// 轿车</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Sedan = <span class="hljs-string">"5"</span></span><br><span class="line">    <span class="hljs-comment">/// 小货车</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Buggy = <span class="hljs-string">"6"</span></span><br><span class="line">    <span class="hljs-comment">/// 未知</span></span><br><span class="line">    <span class="hljs-keyword">case</span> Unknown</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果初始化失败返回nil，则默认取最后一个为默认值。</p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-07-05T16:08:26.000Z">2020-07-06</time>
                 
                 <div class="level-item">
@@ -675,110 +806,6 @@ var _hmt = _hmt || [];
 
 
 
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-18T02:02:44.000Z">2020-03-18</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    9 分钟 读完 (大约 1380 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/03/18/2020-03-18-01/">探究KVO的底层实现</a>
-            
-        </h1>
-        <div class="content">
-            <h2 id="KVO是什么？"><a href="#KVO是什么？" class="headerlink" title="KVO是什么？"></a>KVO是什么？</h2><p>KVO全称KeyValueObserving，俗称键值监听。就是允许监听对象属性的改变，从而响应特定的事件。</p>
-<h2 id="KVO做了什么呢？"><a href="#KVO做了什么呢？" class="headerlink" title="KVO做了什么呢？"></a>KVO做了什么呢？</h2><p>重写对象的setter方法吗？<br>我在Person类里面，重写了age的setter方法，</p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/03/18/2020-03-18-01/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-11T05:27:00.000Z">2020-03-11</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    4 分钟 读完 (大约 583 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/03/11/2020-03-11-01/">事件穿透</a>
-            
-        </h1>
-        <div class="content">
-            <p>在<a href="https://leejnull.github.io/2020/03/05/2020-03-05-02/">事件响应和传递</a>这篇文章中，讲了iOS中的事件响应和传递，今天在做项目的时候，正好碰到了一个应用的场景，因此记录下来。</p>
-<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>首页头部需要添加这样一个视图<br><img src="/images/2020-03-11-01.png" alt><br>点击左右两个按钮，底部的滑块跟着滑动，同时也可以拖动滑块到选中的按钮位置。</p>
-<h2 id="思路和问题"><a href="#思路和问题" class="headerlink" title="思路和问题"></a>思路和问题</h2><p>看到这个设计图一开始的想法就是，左右两个按钮，底部一个滑块视图，然后到做的时候，发现如果要做手势拖拽的话，那么由于层级关系，滑块肯定是在两个按钮下面的，如果要触发滑动手势，势必会被按钮的点击事件阻止。<br><img src="/images/2020-03-11-02.png" alt></p>
-<h2 id="通过重写hitTest方法解决"><a href="#通过重写hitTest方法解决" class="headerlink" title="通过重写hitTest方法解决"></a>通过重写hitTest方法解决</h2><p>首先判断点击点是位于左侧按钮区域还是右侧按钮区域，在根据按钮的选中状态来判断。<br>初始状态时左侧按钮选中，右侧没选中，同时滑块位于左侧。<br>如果触摸点在右侧按钮区域，此时应该走的流程是响应右侧按钮事件。<br>如果触摸点在左侧区域，此时左侧区域是选中状态，应该响应的是滑块的拖动事件。<br>依照这个思路，就有了下面的这段代码</p>
-<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hitTest</span><span class="hljs-params">(<span class="hljs-number">_</span> point: CGPoint, with event: UIEvent?)</span></span> -&gt; <span class="hljs-type">UIView?</span> &#123;</span><br><span class="line">    <span class="hljs-keyword">let</span> superHitPoint = <span class="hljs-keyword">self</span>.convert(point, to: <span class="hljs-keyword">self</span>.superview)</span><br><span class="line">    <span class="hljs-keyword">if</span> superHitPoint.x &lt;= <span class="hljs-keyword">self</span>.frame.width &#123;</span><br><span class="line">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.frame.minX &gt; <span class="hljs-number">0</span> &#123;	<span class="hljs-comment">// 点击左侧按钮，但是现在响应的是右侧按钮，原样传递上去</span></span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.hitTest(point, with: event)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.isSelected &#123;</span><br><span class="line">            <span class="hljs-keyword">return</span> strikeView</span><br><span class="line">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.hitTest(point, with: event)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.frame.minX == <span class="hljs-number">0</span> &#123;	  <span class="hljs-comment">// 同理</span></span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.hitTest(point, with: event)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.isSelected &#123;</span><br><span class="line">            <span class="hljs-keyword">return</span> strikeView</span><br><span class="line">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.hitTest(point, with: event)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里要注意的一点是，由于事件响应链是系统会从后往前遍历子视图，我们点击任何一个区域，两个按钮都会响应hitTest方法，在判断触摸点的区域之后，还要判断一下当期响应的按钮是不是我们期望的按钮，如果不是，则不作任何改动。</p>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -845,7 +872,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        43
+                        45
                     </p>
                 </div>
             </div>
@@ -865,7 +892,7 @@ var _hmt = _hmt || [];
                         标签
                     </p>
                     <p class="title has-text-weight-normal">
-                        50
+                        52
                     </p>
                 </div>
             </div>
@@ -976,7 +1003,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">iOS</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">17</span>
+                <span class="level-item tag">19</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/数据库/">
@@ -1030,7 +1057,7 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/Crash/" style="font-size: 10px;">Crash</a> <a href="/tags/Django/" style="font-size: 13.33px;">Django</a> <a href="/tags/Event/" style="font-size: 10px;">Event</a> <a href="/tags/KVC/" style="font-size: 10px;">KVC</a> <a href="/tags/KVO/" style="font-size: 10px;">KVO</a> <a href="/tags/Mac使用/" style="font-size: 11.67px;">Mac使用</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Mysql/" style="font-size: 10px;">Mysql</a> <a href="/tags/Python/" style="font-size: 11.67px;">Python</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Swift/" style="font-size: 11.67px;">Swift</a> <a href="/tags/UITextView/" style="font-size: 10px;">UITextView</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/Xcode/" style="font-size: 10px;">Xcode</a> <a href="/tags/flag/" style="font-size: 10px;">flag</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/import/" style="font-size: 10px;">import</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/package/" style="font-size: 10px;">package</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/runtime/" style="font-size: 10px;">runtime</a> <a href="/tags/sql/" style="font-size: 11.67px;">sql</a> <a href="/tags/uwsgi/" style="font-size: 10px;">uwsgi</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/位运算/" style="font-size: 10px;">位运算</a> <a href="/tags/内存/" style="font-size: 10px;">内存</a> <a href="/tags/原理/" style="font-size: 10px;">原理</a> <a href="/tags/哈希表/" style="font-size: 10px;">哈希表</a> <a href="/tags/基础/" style="font-size: 11.67px;">基础</a> <a href="/tags/多线程/" style="font-size: 11.67px;">多线程</a> <a href="/tags/字符串/" style="font-size: 10px;">字符串</a> <a href="/tags/学习笔记/" style="font-size: 18.33px;">学习笔记</a> <a href="/tags/定时器/" style="font-size: 10px;">定时器</a> <a href="/tags/富文本/" style="font-size: 10px;">富文本</a> <a href="/tags/小感想/" style="font-size: 10px;">小感想</a> <a href="/tags/小技巧/" style="font-size: 10px;">小技巧</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/底层/" style="font-size: 11.67px;">底层</a> <a href="/tags/性能/" style="font-size: 10px;">性能</a> <a href="/tags/报错/" style="font-size: 10px;">报错</a> <a href="/tags/排序/" style="font-size: 15px;">排序</a> <a href="/tags/数据结构/" style="font-size: 11.67px;">数据结构</a> <a href="/tags/日常反思/" style="font-size: 10px;">日常反思</a> <a href="/tags/日常开发/" style="font-size: 11.67px;">日常开发</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/算法/" style="font-size: 16.67px;">算法</a> <a href="/tags/翻译/" style="font-size: 10px;">翻译</a> <a href="/tags/链表/" style="font-size: 10px;">链表</a> <a href="/tags/锁/" style="font-size: 10px;">锁</a> <a href="/tags/队列/" style="font-size: 10px;">队列</a>
+        <a href="/tags/Codable/" style="font-size: 10px;">Codable</a> <a href="/tags/Crash/" style="font-size: 10px;">Crash</a> <a href="/tags/Django/" style="font-size: 13.33px;">Django</a> <a href="/tags/Event/" style="font-size: 10px;">Event</a> <a href="/tags/KVC/" style="font-size: 10px;">KVC</a> <a href="/tags/KVO/" style="font-size: 10px;">KVO</a> <a href="/tags/Mac使用/" style="font-size: 11.67px;">Mac使用</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Mysql/" style="font-size: 10px;">Mysql</a> <a href="/tags/Python/" style="font-size: 11.67px;">Python</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Swift/" style="font-size: 11.67px;">Swift</a> <a href="/tags/UITextView/" style="font-size: 10px;">UITextView</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/Xcode/" style="font-size: 10px;">Xcode</a> <a href="/tags/Xib/" style="font-size: 10px;">Xib</a> <a href="/tags/flag/" style="font-size: 10px;">flag</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/import/" style="font-size: 10px;">import</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/package/" style="font-size: 10px;">package</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/runtime/" style="font-size: 10px;">runtime</a> <a href="/tags/sql/" style="font-size: 11.67px;">sql</a> <a href="/tags/uwsgi/" style="font-size: 10px;">uwsgi</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/位运算/" style="font-size: 10px;">位运算</a> <a href="/tags/内存/" style="font-size: 10px;">内存</a> <a href="/tags/原理/" style="font-size: 10px;">原理</a> <a href="/tags/哈希表/" style="font-size: 10px;">哈希表</a> <a href="/tags/基础/" style="font-size: 11.67px;">基础</a> <a href="/tags/多线程/" style="font-size: 11.67px;">多线程</a> <a href="/tags/字符串/" style="font-size: 10px;">字符串</a> <a href="/tags/学习笔记/" style="font-size: 18.33px;">学习笔记</a> <a href="/tags/定时器/" style="font-size: 10px;">定时器</a> <a href="/tags/富文本/" style="font-size: 10px;">富文本</a> <a href="/tags/小感想/" style="font-size: 10px;">小感想</a> <a href="/tags/小技巧/" style="font-size: 10px;">小技巧</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/底层/" style="font-size: 11.67px;">底层</a> <a href="/tags/性能/" style="font-size: 10px;">性能</a> <a href="/tags/报错/" style="font-size: 10px;">报错</a> <a href="/tags/排序/" style="font-size: 15px;">排序</a> <a href="/tags/数据结构/" style="font-size: 11.67px;">数据结构</a> <a href="/tags/日常反思/" style="font-size: 10px;">日常反思</a> <a href="/tags/日常开发/" style="font-size: 11.67px;">日常开发</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/算法/" style="font-size: 16.67px;">算法</a> <a href="/tags/翻译/" style="font-size: 10px;">翻译</a> <a href="/tags/链表/" style="font-size: 10px;">链表</a> <a href="/tags/锁/" style="font-size: 10px;">锁</a> <a href="/tags/队列/" style="font-size: 10px;">队列</a>
     </div>
 </div>
 
@@ -1044,6 +1071,32 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             最新文章
         </h3>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-07-15T11:52:08.000Z">2020-07-15</time></div>
+                    <a href="/2020/07/15/如何继承一个带有Xib的ViewController/" class="title has-link-black-ter is-size-6 has-text-weight-normal">如何继承一个带有Xib的ViewController</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-07-06T05:35:53.000Z">2020-07-06</time></div>
+                    <a href="/2020/07/06/Swift-enum类型添加Codable默认值/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Swift enum类型添加Codable默认值</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1084,32 +1137,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-02T07:13:22.000Z">2020-04-02</time></div>
-                    <a href="/2020/04/02/2020-04-02-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">简单了解iOS中的锁</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-24T16:07:42.000Z">2020-03-25</time></div>
-                    <a href="/2020/03/25/2020-03-25-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">了解Category</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1128,7 +1155,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">七月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">1</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -1222,6 +1249,13 @@ var _hmt = _hmt || [];
                 标签
             </h3>
             <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Codable/">
+                        <span class="tag">Codable</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
                 
                 <div class="control">
                     <a class="tags has-addons" href="/tags/Crash/">
@@ -1322,6 +1356,13 @@ var _hmt = _hmt || [];
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/Xib/">
+                        <span class="tag">Xib</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/flag/">
                         <span class="tag">flag</span>
                         <span class="tag is-grey">1</span>
@@ -1331,7 +1372,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/iOS/">
                         <span class="tag">iOS</span>
-                        <span class="tag is-grey">16</span>
+                        <span class="tag is-grey">18</span>
                     </a>
                 </div>
                 
@@ -1601,6 +1642,32 @@ var _hmt = _hmt || [];
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-07-15T11:52:08.000Z">2020-07-15</time></div>
+                    <a href="/2020/07/15/如何继承一个带有Xib的ViewController/" class="title has-link-black-ter is-size-6 has-text-weight-normal">如何继承一个带有Xib的ViewController</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-07-06T05:35:53.000Z">2020-07-06</time></div>
+                    <a href="/2020/07/06/Swift-enum类型添加Codable默认值/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Swift enum类型添加Codable默认值</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-07-05T16:08:26.000Z">2020-07-06</time></div>
                     <a href="/2020/07/06/UITextView实现点击富文本响应事件/" class="title has-link-black-ter is-size-6 has-text-weight-normal">UITextView实现点击富文本响应事件</a>
                     <p class="is-size-7 is-uppercase">
@@ -1636,32 +1703,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-02T07:13:22.000Z">2020-04-02</time></div>
-                    <a href="/2020/04/02/2020-04-02-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">简单了解iOS中的锁</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-24T16:07:42.000Z">2020-03-25</time></div>
-                    <a href="/2020/03/25/2020-03-25-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">了解Category</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1680,7 +1721,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">七月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">1</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -1774,6 +1815,13 @@ var _hmt = _hmt || [];
                 标签
             </h3>
             <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Codable/">
+                        <span class="tag">Codable</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
                 
                 <div class="control">
                     <a class="tags has-addons" href="/tags/Crash/">
@@ -1874,6 +1922,13 @@ var _hmt = _hmt || [];
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/Xib/">
+                        <span class="tag">Xib</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/flag/">
                         <span class="tag">flag</span>
                         <span class="tag is-grey">1</span>
@@ -1883,7 +1938,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/iOS/">
                         <span class="tag">iOS</span>
-                        <span class="tag is-grey">16</span>
+                        <span class="tag is-grey">18</span>
                     </a>
                 </div>
                 
