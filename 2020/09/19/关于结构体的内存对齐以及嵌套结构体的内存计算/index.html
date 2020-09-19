@@ -7,21 +7,22 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>标签: Swift - lee的博客</title>
+<title>关于结构体的内存对齐以及嵌套结构体的内存计算 - lee的博客</title>
 
 
-    <meta name="description" content="人一旦有了梦想，怎么活都是有灵魂的">
-<meta name="keywords" content="Go Python iOS 全栈">
-<meta property="og:type" content="website">
-<meta property="og:title" content="lee的博客">
-<meta property="og:url" content="https://leejnull.github.io/tags/Swift/index.html">
+    <meta name="description" content="8中基本类型所占字节数byte        1short        2int        4long        8float        4double    8char        2bool        1    前面的地址必须是下一个大小的整数倍比如前面是0 ~ 11，下一位是一个char类型的变量，只占1个字节，第12位是1字节的整数倍，那么第12位就可以存放这个变量。">
+<meta name="keywords" content="内存,结构体">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于结构体的内存对齐以及嵌套结构体的内存计算">
+<meta property="og:url" content="https://leejnull.github.io/2020/09/19/关于结构体的内存对齐以及嵌套结构体的内存计算/index.html">
 <meta property="og:site_name" content="lee的博客">
-<meta property="og:description" content="人一旦有了梦想，怎么活都是有灵魂的">
+<meta property="og:description" content="8中基本类型所占字节数byte        1short        2int        4long        8float        4double    8char        2bool        1    前面的地址必须是下一个大小的整数倍比如前面是0 ~ 11，下一位是一个char类型的变量，只占1个字节，第12位是1字节的整数倍，那么第12位就可以存放这个变量。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://leejnull.github.io/images/og_image.png">
+<meta property="og:updated_time" content="2020-09-19T06:34:48.518Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="lee的博客">
-<meta name="twitter:description" content="人一旦有了梦想，怎么活都是有灵魂的">
+<meta name="twitter:title" content="关于结构体的内存对齐以及嵌套结构体的内存计算">
+<meta name="twitter:description" content="8中基本类型所占字节数byte        1short        2int        4long        8float        4double    8char        2bool        1    前面的地址必须是下一个大小的整数倍比如前面是0 ~ 11，下一位是一个char类型的变量，只占1个字节，第12位是1字节的整数倍，那么第12位就可以存放这个变量。">
 <meta name="twitter:image" content="https://leejnull.github.io/images/og_image.png">
 
 
@@ -105,13 +106,13 @@ var _hmt = _hmt || [];
 
 <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="is-3-column">
+<body class="is-2-column">
     <nav class="navbar navbar-main">
     <div class="container">
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="lee的博客" height="28">
+                <img src="/images/logo.svg" alt="关于结构体的内存对齐以及嵌套结构体的内存计算" height="28">
             
             </a>
         </div>
@@ -158,131 +159,143 @@ var _hmt = _hmt || [];
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-09-19T06:29:51.000Z">2020-09-19</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    3 分钟 读完 (大约 422 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                关于结构体的内存对齐以及嵌套结构体的内存计算
+            
+        </h1>
+        <div class="content">
+            <blockquote>
+<p><strong>8中基本类型所占字节数</strong><br>byte        1<br>short        2<br>int        4<br>long        8<br>float        4<br>double    8<br>char        2<br>bool        1  </p>
+</blockquote>
+<h2 id="前面的地址必须是下一个大小的整数倍"><a href="#前面的地址必须是下一个大小的整数倍" class="headerlink" title="前面的地址必须是下一个大小的整数倍"></a>前面的地址必须是下一个大小的整数倍</h2><p>比如前面是0 ~ 11，下一位是一个char类型的变量，只占1个字节，第12位是1字节的整数倍，那么第12位就可以存放这个变量。再下一位是一个int型的变量，占4个字节，此时0~12位存放了数据，往下第13位不是4的倍数，必须补齐到最近的16才可以，那么就需要从16位开始存：16，17，18，19</p>
+<h2 id="整个Struct的地址必须是最大字节的整数倍"><a href="#整个Struct的地址必须是最大字节的整数倍" class="headerlink" title="整个Struct的地址必须是最大字节的整数倍"></a>整个Struct的地址必须是最大字节的整数倍</h2><p>如果最后计算大小是14，最大的变量大小是4，那么整个必须是4的倍数才行，最后大小为16。</p>
+<h2 id="内嵌结构体需要展开计算"><a href="#内嵌结构体需要展开计算" class="headerlink" title="内嵌结构体需要展开计算"></a>内嵌结构体需要展开计算</h2><p>在计算内存大小的时候，内嵌结构体的变量都被解包放在最外层计算。就像多维数组转为一维数组一样。</p>
+<h2 id="计算一个结构体的大小"><a href="#计算一个结构体的大小" class="headerlink" title="计算一个结构体的大小"></a>计算一个结构体的大小</h2><figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Foo</span> &#123;</span></span><br><span class="line">	<span class="hljs-keyword">int</span> a;		<span class="hljs-comment">// 占4个字节	0,1,2,3</span></span><br><span class="line">	<span class="hljs-keyword">double</span> b;	<span class="hljs-comment">// 占8个字节，4不是8的倍数，所以要从8开始 8,9,10,11,12,13,14,15</span></span><br><span class="line">	<span class="hljs-keyword">short</span> c;	<span class="hljs-comment">// 占2个字节	16,17</span></span><br><span class="line">	<span class="hljs-keyword">char</span> d;		<span class="hljs-comment">// 占2个字节	18,19</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>计算出的大小是20，但是总大小必须是最大字节的整数倍，所以是24.</p>
+<h3 id="内嵌结构体大小"><a href="#内嵌结构体大小" class="headerlink" title="内嵌结构体大小"></a>内嵌结构体大小</h3><figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Soo</span> &#123;</span></span><br><span class="line">	<span class="hljs-keyword">double</span> a;</span><br><span class="line">	<span class="hljs-keyword">int</span> b;</span><br><span class="line">	<span class="hljs-keyword">char</span> c;</span><br><span class="line">	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Foo</span> <span class="hljs-title">f</span>;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在计算的时候，会把Foo类型的变量都拿到最外层，就会变成下面这样</p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Soo</span> &#123;</span></span><br><span class="line">	<span class="hljs-keyword">double</span> a;	<span class="hljs-comment">// 0,1,2,3,4,5,6,7</span></span><br><span class="line">	<span class="hljs-keyword">int</span> b;		<span class="hljs-comment">// 8,9,10,11</span></span><br><span class="line">	<span class="hljs-keyword">char</span> c;		<span class="hljs-comment">// 12,13</span></span><br><span class="line">	<span class="hljs-keyword">int</span> fa;		<span class="hljs-comment">// 16,17,18,19</span></span><br><span class="line">	<span class="hljs-keyword">double</span> fb;	<span class="hljs-comment">// 24,25,26,27,28,29,30,31</span></span><br><span class="line">	<span class="hljs-keyword">short</span> fc;	<span class="hljs-comment">// 32,33</span></span><br><span class="line">	<span class="hljs-keyword">char</span> fd;	<span class="hljs-comment">// 34,35</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>计算出的大小是36，最大字节是8，所以最后是40.</p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/内存/">内存</a>, <a class="has-link-grey -link" href="/tags/结构体/">结构体</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
     <div class="card-content">
-        <nav class="breadcrumb" aria-label="breadcrumbs">
-        <ul>
-            <li><a href="/tags">标签</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Swift</a></li>
-        </ul>
-        </nav>
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/alipay.jpg" alt="支付宝"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/wechatpay.jpg" alt="微信"></div>
+</a>
+
+                
+        </div>
     </div>
 </div>
 
-    <div class="card">
-    
-    <div class="card-content article ">
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-01-03T07:51:21.000Z">2020-01-03</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    7 分钟 读完 (大约 1084 个字)
-                </span>
-                
-                
-            </div>
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/09/16/彻底区分isKindOfClass和isMemberOfClass/">
+                <span class="level-item">彻底区分isKindOfClass和isMemberOfClass</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
         </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/01/03/2020-01-03-02/">探究写时复制</a>
-            
-        </h1>
-        <div class="content">
-            <h4 id="写时复制"><a href="#写时复制" class="headerlink" title="写时复制"></a>写时复制</h4><p>和Objective-C不同，在Swift中，Array、Dictionary、Set这样的集合不再是引用类型而是值类型了，这意味着，每次传递不再是传递指针而是一个Copy后的值，但是如果每次都要Copy一次的话就会太浪费性能，所以这时候就要用到一个写时复制(copy-or-write)的技术。</p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/01/03/2020-01-03-02/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
         
     </div>
 </div>
 
 
 
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: false,
+        verify: false,
+        app_id: '7CGzybHlBx3krS6DnoSkL1BR-gzGzoHsz',
+        app_key: 'u3A9Vlz8twJRIbjVc8McLId6',
+        placeholder: '...'
+    });
+</script>
 
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-01-03T01:32:26.000Z">2020-01-03</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    4 分钟 读完 (大约 565 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/01/03/2020-01-03-01/">Swift与OC的运行时特性</a>
-            
-        </h1>
-        <div class="content">
-            <h4 id="OC运行时"><a href="#OC运行时" class="headerlink" title="OC运行时"></a>OC运行时</h4><ul>
-<li>动态类型</li>
-<li>动态绑定</li>
-<li>动态装载</li></ul>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/01/03/2020-01-03-01/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
     </div>
 </div>
-
-
-
-
-
-
-
-
 </div>
                 
 
 
 
 
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
     
         
 <div class="card widget">
@@ -510,7 +523,7 @@ var _hmt = _hmt || [];
 
     
     
-        <div class="column-right-shadow is-hidden-widescreen ">
+        <div class="column-right-shadow  ">
         
             
 <div class="card widget">
@@ -1092,596 +1105,6 @@ var _hmt = _hmt || [];
 </div>
         
         </div>
-    
-</div>
-
-                
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
-    
-        
-<div class="card widget">
-    <div class="card-content">
-        <h3 class="menu-label">
-            最新文章
-        </h3>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-09-19T06:29:51.000Z">2020-09-19</time></div>
-                    <a href="/2020/09/19/关于结构体的内存对齐以及嵌套结构体的内存计算/" class="title has-link-black-ter is-size-6 has-text-weight-normal">关于结构体的内存对齐以及嵌套结构体的内存计算</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-09-16T15:06:45.000Z">2020-09-16</time></div>
-                    <a href="/2020/09/16/彻底区分isKindOfClass和isMemberOfClass/" class="title has-link-black-ter is-size-6 has-text-weight-normal">彻底区分isKindOfClass和isMemberOfClass</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-07-15T11:52:08.000Z">2020-07-15</time></div>
-                    <a href="/2020/07/15/如何继承一个带有Xib的ViewController/" class="title has-link-black-ter is-size-6 has-text-weight-normal">如何继承一个带有Xib的ViewController</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-07-06T05:35:53.000Z">2020-07-06</time></div>
-                    <a href="/2020/07/06/Swift-enum类型添加Codable默认值/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Swift enum类型添加Codable默认值</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-07-05T16:08:26.000Z">2020-07-06</time></div>
-                    <a href="/2020/07/06/UITextView实现点击富文本响应事件/" class="title has-link-black-ter is-size-6 has-text-weight-normal">UITextView实现点击富文本响应事件</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-    </div>
-</div>
-
-    
-        <div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-        <h3 class="menu-label">
-            归档
-        </h3>
-        <ul class="menu-list">
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2020/09/">
-                <span class="level-start">
-                    <span class="level-item">九月 2020</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">2</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2020/07/">
-                <span class="level-start">
-                    <span class="level-item">七月 2020</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">3</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2020/04/">
-                <span class="level-start">
-                    <span class="level-item">四月 2020</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">3</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2020/03/">
-                <span class="level-start">
-                    <span class="level-item">三月 2020</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">17</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2020/02/">
-                <span class="level-start">
-                    <span class="level-item">二月 2020</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">3</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2020/01/">
-                <span class="level-start">
-                    <span class="level-item">一月 2020</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">7</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/12/">
-                <span class="level-start">
-                    <span class="level-item">十二月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">3</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/09/">
-                <span class="level-start">
-                    <span class="level-item">九月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">1</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/08/">
-                <span class="level-start">
-                    <span class="level-item">八月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">8</span>
-                </span>
-            </a>
-        </li>
-        
-        </ul>
-        </div>
-    </div>
-</div>
-    
-        <div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                标签
-            </h3>
-            <div class="field is-grouped is-grouped-multiline">
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Codable/">
-                        <span class="tag">Codable</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Crash/">
-                        <span class="tag">Crash</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Django/">
-                        <span class="tag">Django</span>
-                        <span class="tag is-grey">3</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Event/">
-                        <span class="tag">Event</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/ISA/">
-                        <span class="tag">ISA</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/KVC/">
-                        <span class="tag">KVC</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/KVO/">
-                        <span class="tag">KVO</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Mac使用/">
-                        <span class="tag">Mac使用</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/MarkDown/">
-                        <span class="tag">MarkDown</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Mysql/">
-                        <span class="tag">Mysql</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Python/">
-                        <span class="tag">Python</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/RunLoop/">
-                        <span class="tag">RunLoop</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Swift/">
-                        <span class="tag">Swift</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/UITextView/">
-                        <span class="tag">UITextView</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Vue/">
-                        <span class="tag">Vue</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Xcode/">
-                        <span class="tag">Xcode</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Xib/">
-                        <span class="tag">Xib</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/flag/">
-                        <span class="tag">flag</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/iOS/">
-                        <span class="tag">iOS</span>
-                        <span class="tag is-grey">19</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/import/">
-                        <span class="tag">import</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/nginx/">
-                        <span class="tag">nginx</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/package/">
-                        <span class="tag">package</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/pip/">
-                        <span class="tag">pip</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/runtime/">
-                        <span class="tag">runtime</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/sql/">
-                        <span class="tag">sql</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/uwsgi/">
-                        <span class="tag">uwsgi</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/优化/">
-                        <span class="tag">优化</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/位运算/">
-                        <span class="tag">位运算</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/内存/">
-                        <span class="tag">内存</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/原理/">
-                        <span class="tag">原理</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/哈希表/">
-                        <span class="tag">哈希表</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/基础/">
-                        <span class="tag">基础</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/多线程/">
-                        <span class="tag">多线程</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/字符串/">
-                        <span class="tag">字符串</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/学习笔记/">
-                        <span class="tag">学习笔记</span>
-                        <span class="tag is-grey">14</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/定时器/">
-                        <span class="tag">定时器</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/富文本/">
-                        <span class="tag">富文本</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/小感想/">
-                        <span class="tag">小感想</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/小技巧/">
-                        <span class="tag">小技巧</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/并发/">
-                        <span class="tag">并发</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/底层/">
-                        <span class="tag">底层</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/性能/">
-                        <span class="tag">性能</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/报错/">
-                        <span class="tag">报错</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/排序/">
-                        <span class="tag">排序</span>
-                        <span class="tag is-grey">5</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/数据结构/">
-                        <span class="tag">数据结构</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/日常反思/">
-                        <span class="tag">日常反思</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/日常开发/">
-                        <span class="tag">日常开发</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/正则表达式/">
-                        <span class="tag">正则表达式</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/算法/">
-                        <span class="tag">算法</span>
-                        <span class="tag is-grey">8</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/结构体/">
-                        <span class="tag">结构体</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/翻译/">
-                        <span class="tag">翻译</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/链表/">
-                        <span class="tag">链表</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/锁/">
-                        <span class="tag">锁</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/队列/">
-                        <span class="tag">队列</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-</div>
-    
     
 </div>
 
@@ -1695,7 +1118,7 @@ var _hmt = _hmt || [];
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.svg" alt="lee的博客" height="28">
+                    <img src="/images/logo.svg" alt="关于结构体的内存对齐以及嵌套结构体的内存计算" height="28">
                 
                 </a>
                 <p class="is-size-7">

@@ -7,14 +7,14 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>标签: Swift - lee的博客</title>
+<title>标签: 结构体 - lee的博客</title>
 
 
     <meta name="description" content="人一旦有了梦想，怎么活都是有灵魂的">
 <meta name="keywords" content="Go Python iOS 全栈">
 <meta property="og:type" content="website">
 <meta property="og:title" content="lee的博客">
-<meta property="og:url" content="https://leejnull.github.io/tags/Swift/index.html">
+<meta property="og:url" content="https://leejnull.github.io/tags/结构体/index.html">
 <meta property="og:site_name" content="lee的博客">
 <meta property="og:description" content="人一旦有了梦想，怎么活都是有灵魂的">
 <meta property="og:locale" content="zh-CN">
@@ -163,7 +163,7 @@ var _hmt = _hmt || [];
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             <li><a href="/tags">标签</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Swift</a></li>
+            <li class="is-active"><a href="#" aria-current="page">结构体</a></li>
         </ul>
         </nav>
     </div>
@@ -175,7 +175,7 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-01-03T07:51:21.000Z">2020-01-03</time>
+                <time class="level-item has-text-grey" datetime="2020-09-19T06:29:51.000Z">2020-09-19</time>
                 
                 <div class="level-item">
                 <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
@@ -185,7 +185,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    7 分钟 读完 (大约 1084 个字)
+                    3 分钟 读完 (大约 422 个字)
                 </span>
                 
                 
@@ -194,76 +194,28 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2020/01/03/2020-01-03-02/">探究写时复制</a>
+                <a class="has-link-black-ter" href="/2020/09/19/关于结构体的内存对齐以及嵌套结构体的内存计算/">关于结构体的内存对齐以及嵌套结构体的内存计算</a>
             
         </h1>
         <div class="content">
-            <h4 id="写时复制"><a href="#写时复制" class="headerlink" title="写时复制"></a>写时复制</h4><p>和Objective-C不同，在Swift中，Array、Dictionary、Set这样的集合不再是引用类型而是值类型了，这意味着，每次传递不再是传递指针而是一个Copy后的值，但是如果每次都要Copy一次的话就会太浪费性能，所以这时候就要用到一个写时复制(copy-or-write)的技术。</p>
+            <blockquote>
+<p><strong>8中基本类型所占字节数</strong><br>byte        1<br>short        2<br>int        4<br>long        8<br>float        4<br>double    8<br>char        2<br>bool        1  </p>
+</blockquote>
+<h2 id="前面的地址必须是下一个大小的整数倍"><a href="#前面的地址必须是下一个大小的整数倍" class="headerlink" title="前面的地址必须是下一个大小的整数倍"></a>前面的地址必须是下一个大小的整数倍</h2><p>比如前面是0 ~ 11，下一位是一个char类型的变量，只占1个字节，第12位是1字节的整数倍，那么第12位就可以存放这个变量。再下一位是一个int型的变量，占4个字节，此时0~12位存放了数据，往下第13位不是4的倍数，必须补齐到最近的16才可以，那么就需要从16位开始存：16，17，18，19</p>
+<h2 id="整个Struct的地址必须是最大字节的整数倍"><a href="#整个Struct的地址必须是最大字节的整数倍" class="headerlink" title="整个Struct的地址必须是最大字节的整数倍"></a>整个Struct的地址必须是最大字节的整数倍</h2><p>如果最后计算大小是14，最大的变量大小是4，那么整个必须是4的倍数才行，最后大小为16。</p>
+<h2 id="内嵌结构体需要展开计算"><a href="#内嵌结构体需要展开计算" class="headerlink" title="内嵌结构体需要展开计算"></a>内嵌结构体需要展开计算</h2><p>在计算内存大小的时候，内嵌结构体的变量都被解包放在最外层计算。就像多维数组转为一维数组一样。</p>
+<h2 id="计算一个结构体的大小"><a href="#计算一个结构体的大小" class="headerlink" title="计算一个结构体的大小"></a>计算一个结构体的大小</h2><figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Foo</span> &#123;</span></span><br><span class="line">	<span class="hljs-keyword">int</span> a;		<span class="hljs-comment">// 占4个字节	0,1,2,3</span></span><br><span class="line">	<span class="hljs-keyword">double</span> b;	<span class="hljs-comment">// 占8个字节，4不是8的倍数，所以要从8开始 8,9,10,11,12,13,14,15</span></span><br><span class="line">	<span class="hljs-keyword">short</span> c;	<span class="hljs-comment">// 占2个字节	16,17</span></span><br><span class="line">	<span class="hljs-keyword">char</span> d;		<span class="hljs-comment">// 占2个字节	18,19</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>计算出的大小是20，但是总大小必须是最大字节的整数倍，所以是24.</p>
+<h3 id="内嵌结构体大小"><a href="#内嵌结构体大小" class="headerlink" title="内嵌结构体大小"></a>内嵌结构体大小</h3><figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Soo</span> &#123;</span></span><br><span class="line">	<span class="hljs-keyword">double</span> a;</span><br><span class="line">	<span class="hljs-keyword">int</span> b;</span><br><span class="line">	<span class="hljs-keyword">char</span> c;</span><br><span class="line">	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Foo</span> <span class="hljs-title">f</span>;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在计算的时候，会把Foo类型的变量都拿到最外层，就会变成下面这样</p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Soo</span> &#123;</span></span><br><span class="line">	<span class="hljs-keyword">double</span> a;	<span class="hljs-comment">// 0,1,2,3,4,5,6,7</span></span><br><span class="line">	<span class="hljs-keyword">int</span> b;		<span class="hljs-comment">// 8,9,10,11</span></span><br><span class="line">	<span class="hljs-keyword">char</span> c;		<span class="hljs-comment">// 12,13</span></span><br><span class="line">	<span class="hljs-keyword">int</span> fa;		<span class="hljs-comment">// 16,17,18,19</span></span><br><span class="line">	<span class="hljs-keyword">double</span> fb;	<span class="hljs-comment">// 24,25,26,27,28,29,30,31</span></span><br><span class="line">	<span class="hljs-keyword">short</span> fc;	<span class="hljs-comment">// 32,33</span></span><br><span class="line">	<span class="hljs-keyword">char</span> fd;	<span class="hljs-comment">// 34,35</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>计算出的大小是36，最大字节是8，所以最后是40.</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/01/03/2020-01-03-02/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-01-03T01:32:26.000Z">2020-01-03</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    4 分钟 读完 (大约 565 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/01/03/2020-01-03-01/">Swift与OC的运行时特性</a>
-            
-        </h1>
-        <div class="content">
-            <h4 id="OC运行时"><a href="#OC运行时" class="headerlink" title="OC运行时"></a>OC运行时</h4><ul>
-<li>动态类型</li>
-<li>动态绑定</li>
-<li>动态装载</li></ul>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2020/01/03/2020-01-03-01/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
