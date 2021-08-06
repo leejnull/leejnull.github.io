@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 3.9.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>了解Category - lee的博客</title>
+
+
+    <meta name="description" content="简单了解OC2.0之后添加的语言特性，主要为已经存在的类添加方法。Apple推荐的两个使用场景：  把类的实现分开在不同的文件里面。 可以减少单个文件的体积 可以把不同的功能组织到不同的Category里 可以由多个开发者共同开发一个类 可以按需加载想要的Category   声明私有方法  衍生的使用场景：  模拟多继承 把framework的私有方法公开  和extension区别 exten">
+<meta name="keywords" content="iOS,runtime">
+<meta property="og:type" content="article">
+<meta property="og:title" content="了解Category">
+<meta property="og:url" content="https://leejnull.github.io/2020/03/25/2020-03-25-01/index.html">
+<meta property="og:site_name" content="lee的博客">
+<meta property="og:description" content="简单了解OC2.0之后添加的语言特性，主要为已经存在的类添加方法。Apple推荐的两个使用场景：  把类的实现分开在不同的文件里面。 可以减少单个文件的体积 可以把不同的功能组织到不同的Category里 可以由多个开发者共同开发一个类 可以按需加载想要的Category   声明私有方法  衍生的使用场景：  模拟多继承 把framework的私有方法公开  和extension区别 exten">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://leejnull.github.io/images/og_image.png">
+<meta property="og:updated_time" content="2020-03-24T16:12:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="了解Category">
+<meta name="twitter:description" content="简单了解OC2.0之后添加的语言特性，主要为已经存在的类添加方法。Apple推荐的两个使用场景：  把类的实现分开在不同的文件里面。 可以减少单个文件的体积 可以把不同的功能组织到不同的Category里 可以由多个开发者共同开发一个类 可以按需加载想要的Category   声明私有方法  衍生的使用场景：  模拟多继承 把framework的私有方法公开  和extension区别 exten">
+<meta name="twitter:image" content="https://leejnull.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146062679-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-146062679-1');
+</script>
+
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?7a01d8b4b2d5c464214cfb2a73f0f739";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="了解Category" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-03-24T16:07:42.000Z">2020-03-25</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    19 分钟 读完 (大约 2872 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                了解Category
+            
+        </h1>
+        <div class="content">
+            <h2 id="简单了解"><a href="#简单了解" class="headerlink" title="简单了解"></a>简单了解</h2><p>OC2.0之后添加的语言特性，主要为已经存在的类添加方法。<br>Apple推荐的两个使用场景：</p>
+<ol>
+<li>把类的实现分开在不同的文件里面。<ol>
+<li>可以减少单个文件的体积</li>
+<li>可以把不同的功能组织到不同的Category里</li>
+<li>可以由多个开发者共同开发一个类</li>
+<li>可以按需加载想要的Category</li>
+</ol>
+</li>
+<li>声明私有方法</li>
+</ol>
+<p>衍生的使用场景：</p>
+<ol>
+<li>模拟多继承</li>
+<li>把framework的私有方法公开</li>
+</ol>
+<h2 id="和extension区别"><a href="#和extension区别" class="headerlink" title="和extension区别"></a>和extension区别</h2><ol>
+<li>extension在编译器决定，它就是类的一部分，在编译期和头文件里的@interface和实现文件里的@implementation一起形成一个完整的类。它伴随类的产生而产生，也随类一起消亡。</li>
+<li>extension一般用来隐藏类的私有信息，你必须有一个类的源码才能为一个类添加extension，我们无法为系统类比如NSString添加extension。</li>
+<li>category是在运行期决定的。</li>
+<li>category无法添加实例变量，而extension可以。因为在运行期，对象的内存布局已经确定，如果添加实例变量就会破坏类的内部布局。<a id="more"></a>
+
+</li>
+</ol>
+<h2 id="内部探究"><a href="#内部探究" class="headerlink" title="内部探究"></a>内部探究</h2><h3 id="分类结构"><a href="#分类结构" class="headerlink" title="分类结构"></a>分类结构</h3><p>所有的OC类和对象，在runtime层都是用struct来表示的，category也不例外，才runtime层，category用结构体category_t（objc-runtime-new.h中）表示。</p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">category_t</span> &#123;</span></span><br><span class="line">    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *name;</span><br><span class="line">    <span class="hljs-keyword">classref_t</span> cls;</span><br><span class="line">    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">method_list_t</span> *<span class="hljs-title">instanceMethods</span>;</span></span><br><span class="line">    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">method_list_t</span> *<span class="hljs-title">classMethods</span>;</span></span><br><span class="line">    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">protocol_list_t</span> *<span class="hljs-title">protocols</span>;</span></span><br><span class="line">    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">property_list_t</span> *<span class="hljs-title">instanceProperties</span>;</span></span><br><span class="line">    <span class="hljs-comment">// Fields below this point are not always present on disk.</span></span><br><span class="line">    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">property_list_t</span> *_<span class="hljs-title">classProperties</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">method_list_t</span> *methodsForMeta(<span class="hljs-keyword">bool</span> isMeta) &#123;</span><br><span class="line">        <span class="hljs-keyword">if</span> (isMeta) <span class="hljs-keyword">return</span> classMethods;</span><br><span class="line">        <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> instanceMethods;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">property_list_t</span> *propertiesForMeta(<span class="hljs-keyword">bool</span> isMeta, struct header_info *hi);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>类名（name）</li>
+<li>类（cls）</li>
+<li>category中所有给类添加的实例方法的列表（instanceMethods）</li>
+<li>category中所有添加的类方法的列表（classMethods）</li>
+<li>category中实现的所有协议的列表（protocols）</li>
+<li>category中添加的所有属性（instanceProperties）</li>
+<li>category中添加的所有类属性（classProperties），这里说明了不是在所有的版本中都有。因为类属性这个概念也是后来才加上去的。</li>
+<li>获取方法列表函数，根据传入的参数是否是元类，来决定返回类方法还是实例方法。</li>
+<li>获取属性列表函数，第二个参数还没弄明白是干什么的。</li>
+</ol>
+<p>从定义上可以看出，category可以为类添加实例方法、类方法、实现协议、添加属性、添加类属性，但是无法添加实例变量。</p>
+<h3 id="用clang转换一下代码"><a href="#用clang转换一下代码" class="headerlink" title="用clang转换一下代码"></a>用clang转换一下代码</h3><p>我们先写一个分类</p>
+<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// .h</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">MyClass</span> : <span class="hljs-title">NSObject</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)printName;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">MyClass</span> (<span class="hljs-title">MyAddition</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *name;</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)printName;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// .m</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">MyClass</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)printName &#123;</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>, <span class="hljs-string">@"MyClass"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">MyClass</span> (<span class="hljs-title">MyAddition</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)printName &#123;</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>, <span class="hljs-string">@"MyAddition"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>然后用clang指令：<code>clang -rewrite-objc MyClass.m</code> 生成.cpp文件，打开翻到最后面的Category部分</p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> /*_<span class="hljs-title">method_list_t</span>*/ &#123;</span></span><br><span class="line">	<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> entsize;  <span class="hljs-comment">// sizeof(struct _objc_method)</span></span><br><span class="line">	<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> method_count;</span><br><span class="line">	<span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">objc_method</span> <span class="hljs-title">method_list</span>[1];</span></span><br><span class="line">&#125; _OBJC_$_CATEGORY_INSTANCE_METHODS_MyClass_$_MyAddition __attribute__ ((used, section (“__DATA,__objc_const”))) = &#123;</span><br><span class="line">	<span class="hljs-keyword">sizeof</span>(_objc_method),</span><br><span class="line">	<span class="hljs-number">1</span>,</span><br><span class="line">	&#123;&#123;(struct objc_selector *)”printName”, “v16@<span class="hljs-number">0</span>:<span class="hljs-number">8</span>”, (<span class="hljs-keyword">void</span> *)_I_MyClass_MyAddition_printName&#125;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> /*_<span class="hljs-title">prop_list_t</span>*/ &#123;</span></span><br><span class="line">	<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> entsize;  <span class="hljs-comment">// sizeof(struct _prop_t)</span></span><br><span class="line">	<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> count_of_properties;</span><br><span class="line">	<span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">prop_t</span> <span class="hljs-title">prop_list</span>[1];</span></span><br><span class="line">&#125; _OBJC_$_PROP_LIST_MyClass_$_MyAddition __attribute__ ((used, section (<span class="hljs-string">"__DATA,__objc_const"</span>))) = &#123;</span><br><span class="line">	<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">_prop_t</span>),</span><br><span class="line">	<span class="hljs-number">1</span>,</span><br><span class="line">	&#123;&#123;<span class="hljs-string">"name"</span>,<span class="hljs-string">"T@\"NSString\",C,N"</span>&#125;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">extern</span> <span class="hljs-string">"C"</span> __declspec(dllexport) <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">class_t</span> <span class="hljs-title">OBJC_CLASS_</span>$_<span class="hljs-title">MyClass</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">category_t</span> _<span class="hljs-title">OBJC_</span>$_<span class="hljs-title">CATEGORY_MyClass_</span>$_<span class="hljs-title">MyAddition</span> __<span class="hljs-title">attribute__</span> ((<span class="hljs-title">used</span>, <span class="hljs-title">section</span> ("__<span class="hljs-title">DATA</span>,__<span class="hljs-title">objc_const</span>"))) = </span></span><br><span class="line"><span class="hljs-class">&#123;</span></span><br><span class="line">	<span class="hljs-string">"MyClass"</span>,</span><br><span class="line">	<span class="hljs-number">0</span>, <span class="hljs-comment">// &amp;OBJC_CLASS_$_MyClass,</span></span><br><span class="line">	(<span class="hljs-keyword">const</span> struct <span class="hljs-keyword">_method_list_t</span> *)&amp;_OBJC_$_CATEGORY_INSTANCE_METHODS_MyClass_$_MyAddition,</span><br><span class="line">	<span class="hljs-number">0</span>,</span><br><span class="line">	<span class="hljs-number">0</span>,</span><br><span class="line">	(<span class="hljs-keyword">const</span> struct <span class="hljs-keyword">_prop_list_t</span> *)&amp;_OBJC_$_PROP_LIST_MyClass_$_MyAddition,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> OBJC_CATEGORY_SETUP_$_MyClass_$_MyAddition(<span class="hljs-keyword">void</span> ) &#123;</span><br><span class="line">	_OBJC_$_CATEGORY_MyClass_$_MyAddition.cls = &amp;OBJC_CLASS_$_MyClass;</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> section(“.objc_inithooks$B”, long, read, write)</span></span><br><span class="line">__declspec(allocate(“.objc_inithooks$B”)) <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> *OBJC_CATEGORY_SETUP[] = &#123;</span><br><span class="line">	(<span class="hljs-keyword">void</span> *)&amp;OBJC_CATEGORY_SETUP_$_MyClass_$_MyAddition,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">class_t</span> *<span class="hljs-title">L_OBJC_LABEL_CLASS_</span>$ [1] __<span class="hljs-title">attribute__</span>((<span class="hljs-title">used</span>, <span class="hljs-title">section</span> ("__<span class="hljs-title">DATA</span>, __<span class="hljs-title">objc_classlist</span>,<span class="hljs-title">regular</span>,<span class="hljs-title">no_dead_strip</span>")))= &#123;</span></span><br><span class="line">	&amp;OBJC_CLASS_$_MyClass,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">category_t</span> *<span class="hljs-title">L_OBJC_LABEL_CATEGORY_</span>$ [1] __<span class="hljs-title">attribute__</span>((<span class="hljs-title">used</span>, <span class="hljs-title">section</span> ("__<span class="hljs-title">DATA</span>, __<span class="hljs-title">objc_catlist</span>,<span class="hljs-title">regular</span>,<span class="hljs-title">no_dead_strip</span>")))= &#123;</span></span><br><span class="line">	&amp;_OBJC_$_CATEGORY_MyClass_$_MyAddition,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>首先编译器生成了实例方法列表<br><code>_OBJC_$_CATEGORY_INSTANCE_METHODS_MyClass_$_MyAddition</code><br>和属性列表<br><code>_OBJC_$_PROP_LIST_MyClass_$_MyAddition</code><br>都遵循了公共前缀+类名+Category名字的命名方式，所以这里的Category名是不能重复的，否则就会出现编译错误。<br>我们可以在里面看到<code>printName</code>方法和<code>name</code>属性。</li>
+<li>然后生成了<code>_OBJC_$_CATEGORY_MyClass_$_MyAddition</code>，它的类型是<code>_category_t</code>也就是Category本身。用了：<ul>
+<li>类名（”MyClass”）</li>
+<li>类（0）</li>
+<li>实例方法（(const struct <em>method_list_t *)&amp;_OBJC</em>$<em>CATEGORY_INSTANCE_METHODS_MyClass</em>$_MyAddition）</li>
+<li>类方法（0）</li>
+<li>实现协议（0）</li>
+<li>属性（(const struct <em>prop_list_t *)&amp;_OBJC</em>$<em>PROP_LIST_MyClass</em>$_MyAddition）<br>这6个参数来初始化分类。</li>
+</ul>
+</li>
+<li>最后，编译器在DATA段下的<em>_objc_catlist section里保存了一个大小为1的category_t的数组L_OBJC_LABEL_CATEGORY</em>$（如果有多个Category，会生成对应长度的数组），用于运行期Category的加载。</li>
+</ol>
+<h3 id="运行期加载"><a href="#运行期加载" class="headerlink" title="运行期加载"></a>运行期加载</h3><p>我们知道，OC的运行是依赖OC的runtime，而OC的runtime和其它系统库一样，是OS X和iOS通过dyld动态加载的。<br>看一下OC运行时的入口方法：</p>
+<figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/***********************************************************************</span></span><br><span class="line"><span class="hljs-comment">* _objc_init</span></span><br><span class="line"><span class="hljs-comment">* Bootstrap initialization. Registers our image notifier with dyld.</span></span><br><span class="line"><span class="hljs-comment">* Called by libSystem BEFORE library initialization time</span></span><br><span class="line"><span class="hljs-comment">引导程序初始化。用dyld注册我们的图像通知。在库初始化之前由libSystem调用</span></span><br><span class="line"><span class="hljs-comment">**********************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">void</span> _objc_init(<span class="hljs-keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="hljs-keyword">static</span> <span class="hljs-keyword">bool</span> initialized = <span class="hljs-literal">false</span>;</span><br><span class="line">    <span class="hljs-keyword">if</span> (initialized) <span class="hljs-keyword">return</span>;</span><br><span class="line">    initialized = <span class="hljs-literal">true</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// fixme defer initialization until an objc-using image is found?</span></span><br><span class="line">    environ_init();</span><br><span class="line">    tls_init();</span><br><span class="line">    static_init();</span><br><span class="line">    lock_init();</span><br><span class="line">    exception_init();</span><br><span class="line"></span><br><span class="line">    _dyld_objc_notify_register(&amp;map_images, load_images, unmap_image);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>category被附加到类上是在map_images的时候发生的</p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/***********************************************************************</span></span><br><span class="line"><span class="hljs-comment">* map_images</span></span><br><span class="line"><span class="hljs-comment">* Process the given images which are being mapped in by dyld.</span></span><br><span class="line"><span class="hljs-comment">* Calls ABI-agnostic code after taking ABI-specific locks.</span></span><br><span class="line"><span class="hljs-comment">*</span></span><br><span class="line"><span class="hljs-comment">* Locking: write-locks runtimeLock</span></span><br><span class="line"><span class="hljs-comment">**********************************************************************/</span></span><br><span class="line"><span class="hljs-keyword">void</span></span><br><span class="line">map_images(<span class="hljs-keyword">unsigned</span> count, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * <span class="hljs-keyword">const</span> paths[],</span><br><span class="line">           <span class="hljs-keyword">const</span> struct mach_header * <span class="hljs-keyword">const</span> mhdrs[])</span><br><span class="line">&#123;</span><br><span class="line">    <span class="hljs-keyword">mutex_locker_t</span> lock(runtimeLock);</span><br><span class="line">    <span class="hljs-keyword">return</span> map_images_nolock(count, paths, mhdrs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>map_images_nolock</code>函数是定义在objc-os.mm文件中，在最后调用了<code>_read_images</code>函数，我们去objc-runtime-new.mm文件中可以看到<code>_read_images</code>函数。这个函数很长，找到关于Category的部分。</p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/***********************************************************************</span></span><br><span class="line"><span class="hljs-comment">* _read_images</span></span><br><span class="line"><span class="hljs-comment">* Perform initial processing of the headers in the linked </span></span><br><span class="line"><span class="hljs-comment">* list beginning with headerList. </span></span><br><span class="line"><span class="hljs-comment">*</span></span><br><span class="line"><span class="hljs-comment">* Called by: map_images_nolock</span></span><br><span class="line"><span class="hljs-comment">*</span></span><br><span class="line"><span class="hljs-comment">* Locking: runtimeLock acquired by map_images</span></span><br><span class="line"><span class="hljs-comment">**********************************************************************/</span></span><br><span class="line"><span class="hljs-keyword">void</span> _read_images(header_info **hList, <span class="hljs-keyword">uint32_t</span> hCount, <span class="hljs-keyword">int</span> totalClasses, <span class="hljs-keyword">int</span> unoptimizedTotalClasses) &#123;</span><br><span class="line">	<span class="hljs-comment">// …</span></span><br><span class="line">    <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;</span><br><span class="line">	    <span class="hljs-keyword">category_t</span> **catlist = _getObjc2CategoryList(hi, &amp;count);</span><br><span class="line">        <span class="hljs-keyword">bool</span> hasClassProperties = hi-&gt;info()-&gt;hasCategoryClassProperties();</span><br><span class="line">		<span class="hljs-comment">// 往下</span></span><br><span class="line">    &#125;</span><br><span class="line">	<span class="hljs-comment">// …</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先忽略掉所有的print打印相关的代码。然后慢慢来看，首先会拿到所有的category_t数组，具体怎么获取的这里先不管。然后遍历category_t数组。</p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">    <span class="hljs-keyword">category_t</span> *cat = catlist[i];</span><br><span class="line">    Class cls = remapClass(cat-&gt;cls);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> (!cls) &#123;</span><br><span class="line">        <span class="hljs-comment">// Category's target class is missing (probably weak-linked).</span></span><br><span class="line">		  <span class="hljs-comment">// Disavow any knowledge of this category.</span></span><br><span class="line">        catlist[i] = nil;</span><br><span class="line">		  <span class="hljs-keyword">continue</span>;</span><br><span class="line">     &#125;</span><br><span class="line">	   <span class="hljs-comment">// 往下</span></span><br></pre></td></tr></table></figure>
+
+<p>这里首先会拿到分类的class，如果为空就continue。因为Category的目标类可能是弱引用的关系而丢失了。<br>往下看</p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Process this category. </span></span><br><span class="line"><span class="hljs-comment">// First, register the category with its target class. </span></span><br><span class="line"><span class="hljs-comment">// Then, rebuild the class's method lists (etc) if </span></span><br><span class="line"><span class="hljs-comment">// the class is realized. </span></span><br><span class="line"><span class="hljs-keyword">bool</span> classExists = NO;</span><br><span class="line"><span class="hljs-keyword">if</span> (cat-&gt;instanceMethods || cat-&gt;protocols ||  cat-&gt;instanceProperties) &#123;</span><br><span class="line">    addUnattachedCategoryForClass(cat, cls, hi);</span><br><span class="line">    <span class="hljs-keyword">if</span> (cls-&gt;isRealized()) &#123;</span><br><span class="line">        remethodizeClass(cls);</span><br><span class="line">        classExists = YES;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先把这个category注册到目标类上，然后如果实现了类就重建它的方法列表。这里我们要跳过去看一下<code>addUnattachedCategoryForClass</code>这个函数。不是很长。</p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/***********************************************************************</span></span><br><span class="line"><span class="hljs-comment">* addUnattachedCategoryForClass</span></span><br><span class="line"><span class="hljs-comment">* Records an unattached category. 记录一个未附加的category</span></span><br><span class="line"><span class="hljs-comment">* Locking: runtimeLock must be held by the caller.</span></span><br><span class="line"><span class="hljs-comment">**********************************************************************/</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addUnattachedCategoryForClass</span><span class="hljs-params">(<span class="hljs-keyword">category_t</span> *cat, Class cls, header_info *catHeader)</span></span></span><br><span class="line"><span class="hljs-function"></span>&#123;</span><br><span class="line">    runtimeLock.assertLocked();</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// DO NOT use cat-&gt;cls! cls may be cat-&gt;cls-&gt;isa instead</span></span><br><span class="line">    NXMapTable *cats = unattachedCategories();</span><br><span class="line">    category_list *<span class="hljs-built_in">list</span>;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-built_in">list</span> = (category_list *)NXMapGet(cats, cls);</span><br><span class="line">    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">list</span>) &#123;</span><br><span class="line">        <span class="hljs-built_in">list</span> = (category_list *)</span><br><span class="line">            <span class="hljs-built_in">calloc</span>(<span class="hljs-keyword">sizeof</span>(*<span class="hljs-built_in">list</span>) + <span class="hljs-keyword">sizeof</span>(<span class="hljs-built_in">list</span>-&gt;<span class="hljs-built_in">list</span>[<span class="hljs-number">0</span>]), <span class="hljs-number">1</span>);</span><br><span class="line">    &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">        <span class="hljs-built_in">list</span> = (category_list *)</span><br><span class="line">            <span class="hljs-built_in">realloc</span>(<span class="hljs-built_in">list</span>, <span class="hljs-keyword">sizeof</span>(*<span class="hljs-built_in">list</span>) + <span class="hljs-keyword">sizeof</span>(<span class="hljs-built_in">list</span>-&gt;<span class="hljs-built_in">list</span>[<span class="hljs-number">0</span>]) * (<span class="hljs-built_in">list</span>-&gt;count + <span class="hljs-number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-built_in">list</span>-&gt;<span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>-&gt;count++] = (<span class="hljs-keyword">locstamped_category_t</span>)&#123;cat, catHeader&#125;;</span><br><span class="line">    NXMapInsert(cats, cls, <span class="hljs-built_in">list</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先获取未附加的category，创建数组，分配内存空间，NXMapInsert这里的作用是，把类和category、list做一个关联映射。所以真正的添加还不是在这里，我们在回到外层函数去。<br>如果<code>cls-&gt;isRealized()</code>也就是说这个类被实现了，那么就执行<code>remethodizeClass(cls)</code>重新排列类。找到类的实现如下：</p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/***********************************************************************</span></span><br><span class="line"><span class="hljs-comment">* remethodizeClass</span></span><br><span class="line"><span class="hljs-comment">* Attach outstanding categories to an existing class.</span></span><br><span class="line"><span class="hljs-comment">将未完成的category附加到现有类。</span></span><br><span class="line"><span class="hljs-comment">* Fixes up cls's method list, protocol list, and property list.</span></span><br><span class="line"><span class="hljs-comment">修复类的方法列表、协议列表、属性列表。</span></span><br><span class="line"><span class="hljs-comment">* Updates method caches for cls and its subclasses.</span></span><br><span class="line"><span class="hljs-comment">更新类和子类的方法缓存。</span></span><br><span class="line"><span class="hljs-comment">* Locking: runtimeLock must be held by the caller</span></span><br><span class="line"><span class="hljs-comment">**********************************************************************/</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">remethodizeClass</span><span class="hljs-params">(Class cls)</span></span></span><br><span class="line"><span class="hljs-function"></span>&#123;</span><br><span class="line">    category_list *cats;</span><br><span class="line">    <span class="hljs-keyword">bool</span> isMeta;</span><br><span class="line"></span><br><span class="line">    runtimeLock.assertLocked();</span><br><span class="line"></span><br><span class="line">    isMeta = cls-&gt;isMetaClass();</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Re-methodizing: check for more categories</span></span><br><span class="line">    <span class="hljs-keyword">if</span> ((cats = unattachedCategoriesForClass(cls, <span class="hljs-literal">false</span><span class="hljs-comment">/*not realizing*/</span>))) &#123;</span><br><span class="line">        attachCategories(cls, cats, <span class="hljs-literal">true</span> <span class="hljs-comment">/*flush caches*/</span>);        </span><br><span class="line">        <span class="hljs-built_in">free</span>(cats);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先插播一个<code>unattachedCategoriesForClass</code>函数</p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/***********************************************************************</span></span><br><span class="line"><span class="hljs-comment">* unattachedCategoriesForClass</span></span><br><span class="line"><span class="hljs-comment">* Returns the list of unattached categories for a class, and </span></span><br><span class="line"><span class="hljs-comment">* deletes them from the list. </span></span><br><span class="line"><span class="hljs-comment">* The result must be freed by the caller. </span></span><br><span class="line"><span class="hljs-comment">返回类的未附加类别列表，并从列表中删除它们。调用者必须释放结果。</span></span><br><span class="line"><span class="hljs-comment">* Locking: runtimeLock must be held by the caller.</span></span><br><span class="line"><span class="hljs-comment">**********************************************************************/</span></span><br><span class="line"><span class="hljs-keyword">static</span> category_list *</span><br><span class="line">unattachedCategoriesForClass(Class cls, <span class="hljs-keyword">bool</span> realizing)</span><br><span class="line">&#123;</span><br><span class="line">    runtimeLock.assertLocked();</span><br><span class="line">    <span class="hljs-keyword">return</span> (category_list *)NXMapRemove(unattachedCategories(), cls);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>就是从map表中获取列表，然后再移除。</p>
+<p>好，接下来我们看关键函数：<code>attachCategories(cls, cats, true /*flush caches*/);</code></p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Attach method lists and properties and protocols from categories to a class.</span></span><br><span class="line"><span class="hljs-comment">// Assumes the categories in cats are all loaded and sorted by load order, </span></span><br><span class="line"><span class="hljs-comment">// oldest categories first.</span></span><br><span class="line"><span class="hljs-comment">// 将类别中的方法列表、属性和协议附加到类中。假设cats中的类别都是按加载顺序加载和排序的，最早的类别是第一个。</span></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> </span><br><span class="line">attachCategories(Class cls, category_list *cats, <span class="hljs-keyword">bool</span> flush_caches)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="hljs-keyword">if</span> (!cats) <span class="hljs-keyword">return</span>;</span><br><span class="line">    <span class="hljs-keyword">if</span> (PrintReplacedMethods) printReplacements(cls, cats);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">bool</span> isMeta = cls-&gt;isMetaClass();</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// fixme rearrange to remove these intermediate allocations</span></span><br><span class="line">    <span class="hljs-keyword">method_list_t</span> **mlists = (<span class="hljs-keyword">method_list_t</span> **)</span><br><span class="line">        <span class="hljs-built_in">malloc</span>(cats-&gt;count * <span class="hljs-keyword">sizeof</span>(*mlists));</span><br><span class="line">    <span class="hljs-keyword">property_list_t</span> **proplists = (<span class="hljs-keyword">property_list_t</span> **)</span><br><span class="line">        <span class="hljs-built_in">malloc</span>(cats-&gt;count * <span class="hljs-keyword">sizeof</span>(*proplists));</span><br><span class="line">    <span class="hljs-keyword">protocol_list_t</span> **protolists = (<span class="hljs-keyword">protocol_list_t</span> **)</span><br><span class="line">        <span class="hljs-built_in">malloc</span>(cats-&gt;count * <span class="hljs-keyword">sizeof</span>(*protolists));</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Count backwards through cats to get newest categories first</span></span><br><span class="line">    <span class="hljs-keyword">int</span> mcount = <span class="hljs-number">0</span>;</span><br><span class="line">    <span class="hljs-keyword">int</span> propcount = <span class="hljs-number">0</span>;</span><br><span class="line">    <span class="hljs-keyword">int</span> protocount = <span class="hljs-number">0</span>;</span><br><span class="line">    <span class="hljs-keyword">int</span> i = cats-&gt;count;</span><br><span class="line">    <span class="hljs-keyword">bool</span> fromBundle = NO;</span><br><span class="line">    <span class="hljs-keyword">while</span> (i--) &#123;</span><br><span class="line">        <span class="hljs-keyword">auto</span>&amp; entry = cats-&gt;<span class="hljs-built_in">list</span>[i];</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">method_list_t</span> *mlist = entry.cat-&gt;methodsForMeta(isMeta);</span><br><span class="line">        <span class="hljs-keyword">if</span> (mlist) &#123;</span><br><span class="line">            mlists[mcount++] = mlist;</span><br><span class="line">            fromBundle |= entry.hi-&gt;isBundle();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">property_list_t</span> *proplist = </span><br><span class="line">            entry.cat-&gt;propertiesForMeta(isMeta, entry.hi);</span><br><span class="line">        <span class="hljs-keyword">if</span> (proplist) &#123;</span><br><span class="line">            proplists[propcount++] = proplist;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">protocol_list_t</span> *protolist = entry.cat-&gt;protocols;</span><br><span class="line">        <span class="hljs-keyword">if</span> (protolist) &#123;</span><br><span class="line">            protolists[protocount++] = protolist;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">auto</span> rw = cls-&gt;data();</span><br><span class="line"></span><br><span class="line">    prepareMethodLists(cls, mlists, mcount, NO, fromBundle);</span><br><span class="line">    rw-&gt;methods.attachLists(mlists, mcount);</span><br><span class="line">    <span class="hljs-built_in">free</span>(mlists);</span><br><span class="line">    <span class="hljs-keyword">if</span> (flush_caches  &amp;&amp;  mcount &gt; <span class="hljs-number">0</span>) flushCaches(cls);</span><br><span class="line"></span><br><span class="line">    rw-&gt;properties.attachLists(proplists, propcount);</span><br><span class="line">    <span class="hljs-built_in">free</span>(proplists);</span><br><span class="line"></span><br><span class="line">    rw-&gt;protocols.attachLists(protolists, protocount);</span><br><span class="line">    <span class="hljs-built_in">free</span>(protolists);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，按加载顺序，最先添加的category会先被添加。<br>首先分别创建三个大列表：mlists, proplists, protolists。从后往前遍历，获取每一个category的方法列表，属性列表和协议列表，放到对应列表中。<br>遍历完成后，开始最后的附加列表操作。</p>
+<figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">attachLists</span><span class="hljs-params">(List* <span class="hljs-keyword">const</span> * addedLists, <span class="hljs-keyword">uint32_t</span> addedCount)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">if</span> (addedCount == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> (hasArray()) &#123;</span><br><span class="line">        <span class="hljs-comment">// many lists -&gt; many lists</span></span><br><span class="line">        <span class="hljs-keyword">uint32_t</span> oldCount = <span class="hljs-built_in">array</span>()-&gt;count;</span><br><span class="line">        <span class="hljs-keyword">uint32_t</span> newCount = oldCount + addedCount;</span><br><span class="line">        setArray((<span class="hljs-keyword">array_t</span> *)<span class="hljs-built_in">realloc</span>(<span class="hljs-built_in">array</span>(), <span class="hljs-keyword">array_t</span>::byteSize(newCount)));</span><br><span class="line">        <span class="hljs-built_in">array</span>()-&gt;count = newCount;</span><br><span class="line">        memmove(<span class="hljs-built_in">array</span>()-&gt;lists + addedCount, <span class="hljs-built_in">array</span>()-&gt;lists, </span><br><span class="line">                oldCount * <span class="hljs-keyword">sizeof</span>(<span class="hljs-built_in">array</span>()-&gt;lists[<span class="hljs-number">0</span>]));</span><br><span class="line">        <span class="hljs-built_in">memcpy</span>(<span class="hljs-built_in">array</span>()-&gt;lists, addedLists, </span><br><span class="line">               addedCount * <span class="hljs-keyword">sizeof</span>(<span class="hljs-built_in">array</span>()-&gt;lists[<span class="hljs-number">0</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">list</span>  &amp;&amp;  addedCount == <span class="hljs-number">1</span>) &#123;</span><br><span class="line">        <span class="hljs-comment">// 0 lists -&gt; 1 list</span></span><br><span class="line">        <span class="hljs-built_in">list</span> = addedLists[<span class="hljs-number">0</span>];</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">        <span class="hljs-comment">// 1 list -&gt; many lists</span></span><br><span class="line">        List* oldList = <span class="hljs-built_in">list</span>;</span><br><span class="line">        <span class="hljs-keyword">uint32_t</span> oldCount = oldList ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;</span><br><span class="line">        <span class="hljs-keyword">uint32_t</span> newCount = oldCount + addedCount;</span><br><span class="line">        setArray((<span class="hljs-keyword">array_t</span> *)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">array_t</span>::byteSize(newCount)));</span><br><span class="line">        <span class="hljs-built_in">array</span>()-&gt;count = newCount;</span><br><span class="line">        <span class="hljs-keyword">if</span> (oldList) <span class="hljs-built_in">array</span>()-&gt;lists[addedCount] = oldList;</span><br><span class="line">        <span class="hljs-built_in">memcpy</span>(<span class="hljs-built_in">array</span>()-&gt;lists, addedLists, </span><br><span class="line">               addedCount * <span class="hljs-keyword">sizeof</span>(<span class="hljs-built_in">array</span>()-&gt;lists[<span class="hljs-number">0</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意这里的memmove和memcpy操作，它是把原来的方法列表先放到后面，再把新的方法列表放在前面，所以：</p>
+<ol>
+<li>其实category附加完成之后，如果category和原来类都有methodA，那么类的方法列表里面会有两个methodA；</li>
+<li>运行时在查找方法列表时，会按顺序查找，就只会找到category的方法。这就是我们平常说的category的方法会“覆盖”原来类的方法。</li>
+</ol>
+<p>到这里，关于category的运行时加载算是结束了。</p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/iOS/">iOS</a>, <a class="has-link-grey -link" href="/tags/runtime/">runtime</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/alipay.jpg" alt="支付宝"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/wechatpay.jpg" alt="微信"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/04/02/2020-04-02-01/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">简单了解iOS中的锁</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/03/23/2020-03-23-02/">
+                <span class="level-item">简单认识散列表</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: false,
+        verify: false,
+        app_id: '7CGzybHlBx3krS6DnoSkL1BR-gzGzoHsz',
+        app_key: 'u3A9Vlz8twJRIbjVc8McLId6',
+        placeholder: '...'
+    });
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                        <img class="image is-128x128 has-mb-6" src="/images/avatar.png" alt="Harley">
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        Harley
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        人一旦有了梦想，怎么活都是有灵魂的
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>杭州</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        50
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        9
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        58
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="mailto:leejnull@gmail.com" target="_blank">
+                联系我</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Github" href="https://github.com/leejnull">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+    
+        
+
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://apps.apple.com/cn/app/id1505698199" target="_blank">
+                    <span class="level-left">
+                        <span class="level-item">一次记账</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">apps.apple.com</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://apps.apple.com/cn/app/id1576106041" target="_blank">
+                    <span class="level-left">
+                        <span class="level-item">节日倒数</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">apps.apple.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/Git/">
+            <span class="level-start">
+                <span class="level-item">Git</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Go/">
+            <span class="level-start">
+                <span class="level-item">Go</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">4</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Python/">
+            <span class="level-start">
+                <span class="level-item">Python</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">3</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/iOS/">
+            <span class="level-start">
+                <span class="level-item">iOS</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">24</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/数据库/">
+            <span class="level-start">
+                <span class="level-item">数据库</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/数据结构与算法/">
+            <span class="level-start">
+                <span class="level-item">数据结构与算法</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">10</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/日常/">
+            <span class="level-start">
+                <span class="level-item">日常</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/朝花夕拾/">
+            <span class="level-start">
+                <span class="level-item">朝花夕拾</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/运维/">
+            <span class="level-start">
+                <span class="level-item">运维</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/Codable/" style="font-size: 10px;">Codable</a> <a href="/tags/Crash/" style="font-size: 10px;">Crash</a> <a href="/tags/Django/" style="font-size: 13.33px;">Django</a> <a href="/tags/Event/" style="font-size: 10px;">Event</a> <a href="/tags/ISA/" style="font-size: 10px;">ISA</a> <a href="/tags/KVC/" style="font-size: 10px;">KVC</a> <a href="/tags/KVO/" style="font-size: 10px;">KVO</a> <a href="/tags/Mac使用/" style="font-size: 11.67px;">Mac使用</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Mysql/" style="font-size: 10px;">Mysql</a> <a href="/tags/Python/" style="font-size: 11.67px;">Python</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Swift/" style="font-size: 11.67px;">Swift</a> <a href="/tags/UITextView/" style="font-size: 10px;">UITextView</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/Xcode/" style="font-size: 10px;">Xcode</a> <a href="/tags/Xib/" style="font-size: 10px;">Xib</a> <a href="/tags/flag/" style="font-size: 10px;">flag</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/import/" style="font-size: 10px;">import</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/package/" style="font-size: 10px;">package</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/runtime/" style="font-size: 10px;">runtime</a> <a href="/tags/sql/" style="font-size: 11.67px;">sql</a> <a href="/tags/uwsgi/" style="font-size: 10px;">uwsgi</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/位运算/" style="font-size: 10px;">位运算</a> <a href="/tags/内存/" style="font-size: 11.67px;">内存</a> <a href="/tags/动画/" style="font-size: 10px;">动画</a> <a href="/tags/原理/" style="font-size: 10px;">原理</a> <a href="/tags/哈希表/" style="font-size: 10px;">哈希表</a> <a href="/tags/图层/" style="font-size: 10px;">图层</a> <a href="/tags/基础/" style="font-size: 11.67px;">基础</a> <a href="/tags/多线程/" style="font-size: 11.67px;">多线程</a> <a href="/tags/字符串/" style="font-size: 10px;">字符串</a> <a href="/tags/学习笔记/" style="font-size: 18.33px;">学习笔记</a> <a href="/tags/定时器/" style="font-size: 10px;">定时器</a> <a href="/tags/富文本/" style="font-size: 10px;">富文本</a> <a href="/tags/小感想/" style="font-size: 10px;">小感想</a> <a href="/tags/小技巧/" style="font-size: 10px;">小技巧</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/底层/" style="font-size: 11.67px;">底层</a> <a href="/tags/性能/" style="font-size: 10px;">性能</a> <a href="/tags/报错/" style="font-size: 10px;">报错</a> <a href="/tags/排序/" style="font-size: 15px;">排序</a> <a href="/tags/数据结构/" style="font-size: 11.67px;">数据结构</a> <a href="/tags/日常反思/" style="font-size: 10px;">日常反思</a> <a href="/tags/日常开发/" style="font-size: 11.67px;">日常开发</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/算法/" style="font-size: 16.67px;">算法</a> <a href="/tags/结构体/" style="font-size: 10px;">结构体</a> <a href="/tags/绘制/" style="font-size: 11.67px;">绘制</a> <a href="/tags/翻译/" style="font-size: 10px;">翻译</a> <a href="/tags/链表/" style="font-size: 10px;">链表</a> <a href="/tags/锁/" style="font-size: 10px;">锁</a> <a href="/tags/队列/" style="font-size: 10px;">队列</a>
+    </div>
+</div>
+
+    
+    
+        <div class="column-right-shadow  ">
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-04-12T16:38:22.000Z">2021-04-13</time></div>
+                    <a href="/2021/04/13/iOS绘制五角星，实现小数点分数填充/" class="title has-link-black-ter is-size-6 has-text-weight-normal">iOS绘制五角星，实现小数点分数填充</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-12-09T14:43:35.000Z">2020-12-09</time></div>
+                    <a href="/2020/12/09/schema实现iOS项目多环境配置/" class="title has-link-black-ter is-size-6 has-text-weight-normal">schema实现iOS项目多环境配置</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-11-19T16:15:36.000Z">2020-11-20</time></div>
+                    <a href="/2020/11/20/iOS绘制仪表盘，游标沿圆形轨迹移动动画/" class="title has-link-black-ter is-size-6 has-text-weight-normal">iOS绘制仪表盘，游标沿圆形轨迹移动动画</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-09-19T06:29:51.000Z">2020-09-19</time></div>
+                    <a href="/2020/09/19/关于结构体的内存对齐以及嵌套结构体的内存计算/" class="title has-link-black-ter is-size-6 has-text-weight-normal">关于结构体的内存对齐以及嵌套结构体的内存计算</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-09-16T15:06:45.000Z">2020-09-16</time></div>
+                    <a href="/2020/09/16/彻底区分isKindOfClass和isMemberOfClass/" class="title has-link-black-ter is-size-6 has-text-weight-normal">彻底区分isKindOfClass和isMemberOfClass</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/11/">
+                <span class="level-start">
+                    <span class="level-item">十一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/07/">
+                <span class="level-start">
+                    <span class="level-item">七月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">17</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">7</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">8</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Codable/">
+                        <span class="tag">Codable</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Crash/">
+                        <span class="tag">Crash</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Django/">
+                        <span class="tag">Django</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Event/">
+                        <span class="tag">Event</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ISA/">
+                        <span class="tag">ISA</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/KVC/">
+                        <span class="tag">KVC</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/KVO/">
+                        <span class="tag">KVO</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Mac使用/">
+                        <span class="tag">Mac使用</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/MarkDown/">
+                        <span class="tag">MarkDown</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Mysql/">
+                        <span class="tag">Mysql</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Python/">
+                        <span class="tag">Python</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/RunLoop/">
+                        <span class="tag">RunLoop</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Swift/">
+                        <span class="tag">Swift</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/UITextView/">
+                        <span class="tag">UITextView</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Vue/">
+                        <span class="tag">Vue</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Xcode/">
+                        <span class="tag">Xcode</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Xib/">
+                        <span class="tag">Xib</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/flag/">
+                        <span class="tag">flag</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/iOS/">
+                        <span class="tag">iOS</span>
+                        <span class="tag is-grey">22</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/import/">
+                        <span class="tag">import</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/nginx/">
+                        <span class="tag">nginx</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/package/">
+                        <span class="tag">package</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/pip/">
+                        <span class="tag">pip</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/runtime/">
+                        <span class="tag">runtime</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/sql/">
+                        <span class="tag">sql</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/uwsgi/">
+                        <span class="tag">uwsgi</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/优化/">
+                        <span class="tag">优化</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/位运算/">
+                        <span class="tag">位运算</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/内存/">
+                        <span class="tag">内存</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/动画/">
+                        <span class="tag">动画</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/原理/">
+                        <span class="tag">原理</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/哈希表/">
+                        <span class="tag">哈希表</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/图层/">
+                        <span class="tag">图层</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/基础/">
+                        <span class="tag">基础</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/多线程/">
+                        <span class="tag">多线程</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/字符串/">
+                        <span class="tag">字符串</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/学习笔记/">
+                        <span class="tag">学习笔记</span>
+                        <span class="tag is-grey">14</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/定时器/">
+                        <span class="tag">定时器</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/富文本/">
+                        <span class="tag">富文本</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/小感想/">
+                        <span class="tag">小感想</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/小技巧/">
+                        <span class="tag">小技巧</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/并发/">
+                        <span class="tag">并发</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/底层/">
+                        <span class="tag">底层</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/性能/">
+                        <span class="tag">性能</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/报错/">
+                        <span class="tag">报错</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/排序/">
+                        <span class="tag">排序</span>
+                        <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/数据结构/">
+                        <span class="tag">数据结构</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/日常反思/">
+                        <span class="tag">日常反思</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/日常开发/">
+                        <span class="tag">日常开发</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/架构/">
+                        <span class="tag">架构</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/正则表达式/">
+                        <span class="tag">正则表达式</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/算法/">
+                        <span class="tag">算法</span>
+                        <span class="tag is-grey">8</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/结构体/">
+                        <span class="tag">结构体</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/绘制/">
+                        <span class="tag">绘制</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/翻译/">
+                        <span class="tag">翻译</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/链表/">
+                        <span class="tag">链表</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/锁/">
+                        <span class="tag">锁</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/队列/">
+                        <span class="tag">队列</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="了解Category" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2021 Lee JJ&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+<script>
+var IcarusThemeSettings = {
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
